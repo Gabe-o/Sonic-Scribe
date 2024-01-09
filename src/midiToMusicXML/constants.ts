@@ -1,5 +1,5 @@
 /** Convert divisions to note types */
-const DIVISIONS_TO_NOTE_TYPE = {
+export const DIVISIONS_TO_NOTE_TYPE = {
     1: "1024th",
     2: "512th",
     4: "256th",
@@ -14,6 +14,23 @@ const DIVISIONS_TO_NOTE_TYPE = {
     2048: "breve",
     4096: "long",
     8192: "maxima",
+};
+
+export const NOTE_TYPE_TO_DIVISIONS = {
+    "1024th": 1,
+    "512th": 2,
+    "256th": 4,
+    "128th": 8,
+    "64th": 16,
+    "32nd": 32,
+    "16th": 64,
+    eighth: 128,
+    quarter: 256,
+    half: 512,
+    whole: 1024,
+    breve: 2048,
+    long: 4096,
+    maxima: 8192,
 };
 
 
@@ -32,3 +49,13 @@ export const SEQUENCE_KEY_TO_FIFTHS = {
     10: -2, // A#/Bb
     11: 5,  // B
 }
+
+export const MUSICXML_HEADER = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="4.0">
+    <part-list>
+        <score-part id="P1">
+            <part-name>Music</part-name>
+        </score-part>
+    </part-list>
+    <part id="P1">`;

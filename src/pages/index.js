@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import StaffVisualizer from "../components/StaffVisualizer";
 import PianoRollVisualizer from "../components/PianoRollVisualizer";
 import * as mm from "@magenta/music";
-import { noteSequenceToMusicXML } from "../noteSequenceToMusicXML";
+import { noteSequenceToMusicXML } from "../midiToMusicXML/musicxml_convert";
 import UploadButtonComponent from "../components/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../transcribe";
+import { TWINKLE_TWINKLE_2 } from "../SampleNoteSequences";
 
 const IndexPage = () => {
     const [modelReady, setModelReady] = useState(false);
@@ -96,7 +97,7 @@ const IndexPage = () => {
 
             <button
                 onClick={() => {
-                    const musicXML = noteSequenceToMusicXML(noteSequence);
+                    const musicXML = noteSequenceToMusicXML(TWINKLE_TWINKLE_2);
                     downloadFile(musicXML, "music.xml", "application/octet-stream");
                 }}
             >
