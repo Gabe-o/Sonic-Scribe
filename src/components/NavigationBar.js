@@ -5,7 +5,7 @@ import Logo from '../images/logo.png';
 const Navbar = () => {
     return (
         <>
-            <div className='bg-neutral-800 w-full'>
+            {/* <div className='bg-neutral-800 w-full'>
                 <nav className="w-full text-white p-8 flex items-center">
                     <div className="flex items-center text-2xl font-bold mr-8">
                         <img src={Logo} alt="logo" className="mr-2 h-6 w-6" />
@@ -27,7 +27,7 @@ const Navbar = () => {
                     </ul>
                 </nav>
                 <div className='border border-gray-300 mx-auto w-5/6'></div>
-            </div>
+            </div> */}
         </>
     );
 }
