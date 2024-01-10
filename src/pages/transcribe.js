@@ -5,13 +5,11 @@ import PianoRollVisualizer from "../components/PianoRollVisualizer";
 import NavigationBar from "../components/NavigationBar"
 import BG from "../images/headphone-bg.png"
 import * as mm from "@magenta/music";
-// import { noteSequenceToMusicXML } from "../midiToMusicXML/musicxml_convert";
 import { noteSequenceToMusicXML } from "../noteSequenceToMusicXML";
 import UploadButtonComponent from "../components/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../transcribe";
-// import { TWINKLE_TWINKLE_2 } from "../SampleNoteSequences";
 
-const IndexPage = () => {
+const TranscribePage = () => {
     const [modelReady, setModelReady] = useState(false);
     const [file, setFile] = useState(null);
     const [noteSequence, setNoteSequence] = useState(null);
@@ -85,6 +83,40 @@ const IndexPage = () => {
                 <img src={BG} className="absolute inset-0 object-cover w-full h-full z-0" />
                 <div className="absolute inset-0 z-10">
                     <NavigationBar />
+                    {modelReady ? (
+                        <>
+                            <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
+                            {file &&
+                                (noteSequence ? (
+                                    <>
+                                        <PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
+                                        <StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
+                                    </>
+                                ) : (
+                                    <p>Transcribing ...</p>
+                                ))}
+                        </>
+                    ) : (
+                        <p>Loading Model...</p>
+                    )}
+
+                    <button
+                        onClick={() => {
+                            const musicXML = noteSequenceToMusicXML(noteSequence);
+                            downloadFile(musicXML, "music.xml", "application/octet-stream");
+                        }}
+                    >
+                        Download MusicXML
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            const midiData = mm.sequenceProtoToMidi(noteSequence);
+                            downloadFile(midiData, "music.midi", "application/octet-stream");
+                        }}
+                    >
+                        Download MIDI
+                    </button>
                 </div>
             </div>
         </>
@@ -92,6 +124,6 @@ const IndexPage = () => {
     );
 };
 
-export default IndexPage;
+export default TranscribePage;
 
 export const Head = () => <title>SonicScribe</title>;
