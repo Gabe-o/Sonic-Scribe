@@ -10,6 +10,8 @@ import UploadButtonComponent from "../components/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../transcribe";
 import RightArrow from "../images/right-arrow.png";
 
+import Example from "../components/Example/Example";
+
 const TranscribePage = () => {
     const [modelReady, setModelReady] = useState(false);
     const [file, setFile] = useState(null);
@@ -134,6 +136,11 @@ const TranscribePage = () => {
                                      }}>
                                         Audio Transcriber
                                     </h1>
+
+
+                                    <Example />
+
+                                    
                                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
                                     <button style={tutorialButtonStyles} onClick={() => handleTutorialButton()}>
                                         <p>Tutorial</p>
@@ -165,15 +172,9 @@ const TranscribePage = () => {
                         <p>Loading Model...</p>
                     )}
 
-<<<<<<< HEAD
-                    {/* <button
-                        onClick={() => {
-                            const musicXML = noteSequenceToMusicXML(noteSequence);
-=======
                     <button
                         onClick={async () => {
                             const musicXML = await noteSequenceToMusicXML(noteSequence);
->>>>>>> main
                             downloadFile(musicXML, "music.xml", "application/octet-stream");
                         }}
                     >
@@ -187,7 +188,7 @@ const TranscribePage = () => {
                         }}
                     >
                         Download MIDI
-                    </button> */}
+                    </button> */
                 </div>
             </div>
         </>
