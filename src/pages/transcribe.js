@@ -85,7 +85,7 @@ const TranscribePage = () => {
 
     const tutorialButtonStyles = {
         width: "150px",
-        height: "40px",
+        height: "35px",
         backgroundColor: "#2d2d2d",
         display: "flex",
         flexDirection: "row",
@@ -93,7 +93,8 @@ const TranscribePage = () => {
         justifyContent: "center",
         color: "white",
         fontWeight: "200",
-        border: "1px solid white"
+        border: "0.5px solid white",
+        marginTop: "5%"
     }
 
     const rightArrowStyles = {
@@ -109,25 +110,40 @@ const TranscribePage = () => {
                 <div className="absolute inset-0 z-10">
                     <NavigationBar />
                     {modelReady ? (
-                        <>
+                        <div style={{ 
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between"
+                         }}>
                             <div>
-                                <h1 style={audioTranscriberTextStyles}>Audio Transcriber</h1>
-                                <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
-                                <div style={tutorialButtonStyles}>
-                                    <p>Tutorial</p>
-                                    <img src={RightArrow} alt="right-arrow" style={rightArrowStyles}></img>
+                                <div style={{ 
+                                    display: "flex", 
+                                    flexDirection: "column", 
+                                    alignItems: "center",
+
+                                }}>
+                                    <h1 style={audioTranscriberTextStyles}>Audio Transcriber</h1>
+                                    <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
+                                    <div style={tutorialButtonStyles}>
+                                        <p>Tutorial</p>
+                                        <img src={RightArrow} alt="right-arrow" style={rightArrowStyles}></img>
+                                    </div>
                                 </div>
+                                {file &&
+                                    (noteSequence ? (
+                                        <>
+                                            <PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
+                                            <StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
+                                        </>
+                                    ) : (
+                                        <p>Transcribing ...</p>
+                                    ))}
                             </div>
-                            {file &&
-                                (noteSequence ? (
-                                    <>
-                                        <PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
-                                        <StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
-                                    </>
-                                ) : (
-                                    <p>Transcribing ...</p>
-                                ))}
-                        </>
+                            <div style={{ color: "white" }}>
+                                Second one
+                            </div>
+                        </div>
                     ) : (
                         <p>Loading Model...</p>
                     )}

@@ -6,7 +6,7 @@ import { Toast } from "primereact/toast";
 const UploadButtonComponent = ({ onFileUpload }) => {
     const toast = useRef(null);
     let file = undefined;
-    const [fileUploaded, setFileUploaded] = useState(false);
+    const [selectedFile, setSelectedFile] = useState();
 
     // const saveFileLocally = (file) => {
     //     return new Promise((resolve, reject) => {
@@ -38,7 +38,6 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         // Save file locally if you need it in a url e.x. localhost:8000/{uuid}
         // url = await saveFileLocally(file);
         toast.current.show({ severity: "success", summary: "Success", detail: "Uploaded " + file.name, life: 2000 });
-        setFileUploaded(true);
     }
 
     const onError = (event) => {
@@ -48,14 +47,14 @@ const UploadButtonComponent = ({ onFileUpload }) => {
 
     const uploadButtonContainerStyles = {
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         alignItems: "center",
-        width: "30%",
+        width: "40vw",
     }
 
     const uploadFileTextStyles = {
         width: "100%",
-        height: "40px",
+        height: "35px",
         backgroundColor: "white",
         display: "flex",
         alignItems: "center",
@@ -66,7 +65,7 @@ const UploadButtonComponent = ({ onFileUpload }) => {
 
     const uploadButtonStyles = {
         width: "150px",
-        height: "40px",
+        height: "35px",
         backgroundColor: "#cbb593",
         display: "flex",
         flexDirection: "row",
@@ -74,20 +73,49 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         justifyContent: "center"
     }
 
+    const convertButtonStyles = {
+        width: "150px",
+        height: "35px",
+        backgroundColor: "#1c404e",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        fontWeight: "200",
+        border: "0.5px solid white",
+        marginTop: "10%"
+    }
+
     return (
         <div style={uploadButtonContainerStyles}>
-            <p style={uploadFileTextStyles}>Upload File</p>
-            <div style={uploadButtonStyles}>
-                <Toast ref={toast} />
-                <FileUpload
-                    name="files[]"
-                    mode="basic"
-                    onSelect={onSelect}
-                    onError={onError}
-                    multiple={false}
-                    accept=".mp3,.wav,.mid,.midi"
-                    chooseLabel="Upload"
-                />
+            <div style={{ 
+                display: "flex", 
+                flexDirection: "row", 
+                width: "100%", 
+                marginTop: "5vh" ,
+                alignItems: "center",
+                justifyContent: "center"
+            }}>
+                <div style={uploadFileTextStyles}>
+
+                </div>
+                <div>
+                    <Toast ref={toast} />
+                    <FileUpload
+                        name="files[]"
+                        mode="basic"
+                        onSelect={onSelect}
+                        onError={onError}
+                        multiple={false}
+                        accept=".mp3,.wav,.mid,.midi"
+                        chooseLabel="Upload File"
+                        style={uploadButtonStyles}
+                    />
+                </div>
+            </div>
+            <div style={convertButtonStyles}>
+                Convert
             </div>
         </div>
     );
