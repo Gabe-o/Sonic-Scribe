@@ -113,7 +113,6 @@ const IndexPage = () => {
                 Download MIDI
             </button>
 
-      {/* Replace the button with Gatsby's Link */}
       <Link to="/resources">External Resources and Links</Link>
 
         </>
