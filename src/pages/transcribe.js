@@ -108,13 +108,14 @@ const TranscribePage = () => {
             <div className="relative h-screen">
                 <img src={BG} className="absolute inset-0 object-cover w-full h-full z-0" />
                 <div className="absolute inset-0 z-10">
-                    <NavigationBar />
+                <NavigationBar />
                     {modelReady ? (
                         <div style={{ 
                             display: "flex",
                             flexDirection: "row",
                             alignItems: "center",
-                            justifyContent: "space-between"
+                            justifyContent: "space-between",
+                            height: "calc(100vh - 96px)"
                          }}>
                             <div>
                                 <div style={{ 
@@ -148,7 +149,7 @@ const TranscribePage = () => {
                         <p>Loading Model...</p>
                     )}
 
-                    <button
+                    {/* <button
                         onClick={() => {
                             const musicXML = noteSequenceToMusicXML(noteSequence);
                             downloadFile(musicXML, "music.xml", "application/octet-stream");
@@ -164,7 +165,7 @@ const TranscribePage = () => {
                         }}
                     >
                         Download MIDI
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </>
