@@ -101,8 +101,8 @@ const TranscribePage = () => {
                     )}
 
                     <button
-                        onClick={() => {
-                            const musicXML = noteSequenceToMusicXML(noteSequence);
+                        onClick={async () => {
+                            const musicXML = await noteSequenceToMusicXML(noteSequence);
                             downloadFile(musicXML, "music.xml", "application/octet-stream");
                         }}
                     >
