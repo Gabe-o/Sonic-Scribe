@@ -16,6 +16,7 @@ const TranscribePage = () => {
     const [noteSequence, setNoteSequence] = useState(null);
 
     useEffect(() => {
+        // loading onsets and frames
         const init = async () => {
             try {
                 setModelReady(await initOnsetsAndFrames());
@@ -28,7 +29,9 @@ const TranscribePage = () => {
     }, []);
 
     useEffect(() => {
+        // waiting for a file
         if (file && modelReady) {
+            // if it is a midi file it can be parsed directly
             if (file.name.split(".")[1] === "mid" || file.name.split(".")[1] === "midi") {
                 function createArray(file) {
                     return new Promise((resolve, reject) => {
@@ -52,7 +55,7 @@ const TranscribePage = () => {
                 };
 
                 createNoteSequence();
-            } else {
+            } else { // Handles .wav and .mp3 transcription
                 const transcribe = async () => {
                     try {
                         let output = await transcribeFromAudioFile(file);
@@ -67,6 +70,7 @@ const TranscribePage = () => {
         }
     }, [file, modelReady]);
 
+    // Creates a blob and serves it to the user
     function downloadFile(data, filename, type) {
         const blob = new Blob([data], { type });
         const url = URL.createObjectURL(blob);
@@ -161,9 +165,15 @@ const TranscribePage = () => {
                         <p>Loading Model...</p>
                     )}
 
+<<<<<<< HEAD
                     {/* <button
                         onClick={() => {
                             const musicXML = noteSequenceToMusicXML(noteSequence);
+=======
+                    <button
+                        onClick={async () => {
+                            const musicXML = await noteSequenceToMusicXML(noteSequence);
+>>>>>>> main
                             downloadFile(musicXML, "music.xml", "application/octet-stream");
                         }}
                     >

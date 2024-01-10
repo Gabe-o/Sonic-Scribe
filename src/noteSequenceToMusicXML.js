@@ -1,6 +1,4 @@
 import * as mm from "@magenta/music/esm";
-import { quantizeNoteSequence } from "@magenta/music/esm/core/sequences";
-import { TWINKLE_TWINKLE_2 } from "./SampleNoteSequences";
 import * as _ from "lodash";
 
 const TIME_TO_NOTE_TYPE = {
@@ -37,74 +35,52 @@ const NOTE_TYPE_TO_TIME = {
     maxima: 8192,
 };
 
-// export function noteSequenceToMusicXML(noteSequence) {
-//     // Ensure sequence is quantized
-//     if (!noteSequence.isQuantizedSequence) noteSequence = quantizeNoteSequence(noteSequence);
-//     let scoreInfo = getScoreInfo(noteSequence);
+/**
+ * Tries to use the remote xml converter if it fails it uses the local converter
+ * @param {*} noteSequence 
+ * @returns 
+ */
+export async function noteSequenceToMusicXML(noteSequence) {
+    try {
+        return await remoteNoteSequenceToMusicXML(noteSequence);
+    } catch (error) {
+        console.error('Remote method failed:', error);
+        return localNoteSequenceToMusicXML(noteSequence);
+    }
+}
 
-//     // Getting initial Key and Time Signature
-//     let currentKey =
+/**
+ * Requests a note sequence to musicXML conversion from the conversion server using musescore convert
+ * @param {*} noteSequence 
+ * @returns 
+ */
+async function remoteNoteSequenceToMusicXML(noteSequence) {
+    const midi = mm.sequenceProtoToMidi(noteSequence);
+    const midiFile = new Blob([midi], { type: 'audio/midi' });
 
-//     function timeToQuarters(time) {
-//         const q = (time * noteSequence.tempos[0].qpm) / 60;
-//         return Math.round(q * 16) / 16; // min resolution = 1/16 quarter
-//     };
+    let apiEndpoint = 'localhost:3000';
 
-//     function getNoteInfo(note) {
-//         const startQ = timeToQuarters(note.startTime);
-//         const endQ = timeToQuarters(note.endTime);
-//         return {
-//             start: startQ,
-//             length: endQ - startQ,
-//             pitch: note.pitch,
-//             intensity: note.velocity,
-//         };
-//     }
+    const response = await fetch(`http://${apiEndpoint}/convert`, {
+        method: 'POST',
+        body: midiFile,
+        headers: {
+            'Content-Type': 'audio/midi'
+        }
+    });
 
-//     function isNoteInInstruments(note) {
-//         if (note.instrument === undefined || this.instruments.length === 0) {
-//             return true; // No instrument information in note means no filtering.
-//         } else {
-//             // Instrument filtering
-//             return this.instruments.indexOf(note.instrument) >= 0;
-//         }
-//     }
+    const musicxml = await response.text();
 
-//     function getScoreInfo(sequence) {
-//         const notesInfo = [];
-//         for (let note of sequence.notes) {
-//             if (isNoteInInstruments(note)) {
-//                 notesInfo.push(getNoteInfo(note));
-//             }
-//         }
+    // The response is the MusicXML data
+    return musicxml;
+}
 
-//         return {
-//             notes: notesInfo,
-//             tempos: sequence.tempos
-//                 ? sequence.tempos.map((t) => {
-//                       return { start: timeToQuarters(t.time), qpm: t.qpm };
-//                   })
-//                 : [],
-//             keySignatures: sequence.keySignatures
-//                 ? sequence.keySignatures.map((ks) => {
-//                       return { start: timeToQuarters(ks.time), key: ks.key };
-//                   })
-//                 : [],
-//             timeSignatures: sequence.timeSignatures
-//                 ? sequence.timeSignatures.map((ts) => {
-//                       return {
-//                           start: timeToQuarters(ts.time),
-//                           numerator: ts.numerator,
-//                           denominator: ts.denominator,
-//                       };
-//                   })
-//                 : [],
-//         };
-//     }
-// }
-
-export function noteSequenceToMusicXML(noteSequence) {
-    let noteSeq = new mm.NoteSequence(noteSequence || TWINKLE_TWINKLE_2);
+/**
+ * Converts to note sequence locally, uses my own algorithm (it sucks)
+ * @param {*} noteSequence 
+ * @returns 
+ */
+function localNoteSequenceToMusicXML(noteSequence) {
+    let noteSeq = new mm.NoteSequence(noteSequence);
 
     let tempo = noteSeq.tempos[0] ? noteSeq.tempos[0].qpm : 120;
     const SMALLEST_NOTE_LENGTH_SECONDS = 60 / (tempo * 256);
@@ -128,8 +104,6 @@ export function noteSequenceToMusicXML(noteSequence) {
         }
         return a.startTime - b.startTime;
     });
-
-    console.log(notes);
 
     // Add notes for each measure
     let notesWithMeasure = [];
@@ -168,8 +142,6 @@ export function noteSequenceToMusicXML(noteSequence) {
         }
         return a.startTime - b.startTime;
     });
-
-    console.log(notesWithMeasure);
 
     // Tieing notes
     let notesWithTies = [];
@@ -231,8 +203,6 @@ export function noteSequenceToMusicXML(noteSequence) {
             }
         }
     }
-
-    console.log(notesWithTies);
 
     // Classify notes
     for (let i = 0; i < notesWithTies.length; i++) {
@@ -312,8 +282,8 @@ export function noteSequenceToMusicXML(noteSequence) {
                 ${note.dot ? "<dot />" : ""}
                 <notations>
                     ${note.notations.reduce((acc, currVal) => {
-                        return acc + currVal + "\n";
-                    }, "")}
+            return acc + currVal + "\n";
+        }, "")}
 				</notations>
             </note>`;
     }
@@ -353,154 +323,6 @@ function findClosestNoteType(note) {
 
     return { noteType: closestNoteType, isDotted: isDotted };
 }
-
-// export function noteSequenceToMusicXML(noteSequence) {
-//     let notes = new mm.NoteSequence(noteSequence);
-//     let tempo = notes.tempos[0] ? notes.tempos[0].qpm : 120;
-
-//     const SMALLEST_NOTE_LENGTH_SECONDS = 60 / (tempo * 256);
-
-//     // Prep notes for MusicXML conversion
-//     let fixedNotes = notes.notes.slice().map((note) => ({
-//         pitch: note.pitch,
-//         startTime: note.startTime,
-//         endTime: note.endTime,
-//         duration: Math.round((note.endTime - note.startTime) / SMALLEST_NOTE_LENGTH_SECONDS),
-//         noteType: NOTE_TYPES[Math.round((note.endTime - note.startTime) / SMALLEST_NOTE_LENGTH_SECONDS)],
-//         tied: null,
-//     }));
-
-//     fixedNotes.sort((a, b) => {
-//         if (a.startTime === b.startTime) {
-//             return a.endTime - b.endTime;
-//         }
-//         return a.startTime - b.startTime;
-//     });
-
-//     console.log(fixedNotes);
-
-//     let newFixedNotes = [];
-//     for (let i = 0; i < fixedNotes.length; i++) {
-//         // This breaks down notes with bad durations so they can be tied
-//         newFixedNotes.push(fixedNotes[i]);
-
-//         // while this not does not have a note type
-//         while (!newFixedNotes[newFixedNotes.length - 1].noteType) {
-//             // find the biggest note type that will fit
-//             //     newFixedNotes[i].tied = `<notations>
-//             // 	<tied type="start"/>
-//             //  </notations>`;
-//             for (let noteLength of Object.keys(NOTE_TYPES).sort((a, b) => b - a)) {
-//                 if (newFixedNotes[newFixedNotes.length - 1].duration > noteLength) {
-//                     newFixedNotes[newFixedNotes.length - 1].noteType = NOTE_TYPES[noteLength]; // for now we are just using the closest note that will fit need to implement note tieing
-//                     //             // Adding a new adjusted note
-//                     //             let thisIndex = newFixedNotes.length - 1;
-//                     //             let nextIndex = thisIndex + 1;
-//                     //             newFixedNotes.push(newFixedNotes[thisIndex]);
-//                     //             newFixedNotes[nextIndex].duration = newFixedNotes[thisIndex].duration - noteLength;
-//                     //             newFixedNotes[nextIndex].startTime += noteLength * SMALLEST_NOTE_LENGTH_SECONDS;
-//                     //             newFixedNotes[nextIndex].noteType = NOTE_TYPES[newFixedNotes[thisIndex].duration];
-//                     //             newFixedNotes[nextIndex].tied = `<notations>
-//                     // 	<tied type="let-ring"/>
-//                     //  </notations>`;
-
-//                     //             // Fixing current note
-//                     //             newFixedNotes[thisIndex].duration = noteLength;
-//                     //             newFixedNotes[thisIndex].endTime -= noteLength * SMALLEST_NOTE_LENGTH_SECONDS;
-//                     //             newFixedNotes[thisIndex].noteType = NOTE_TYPES[newFixedNotes[thisIndex].duration];
-
-//                     break;
-//                 }
-//             }
-
-//             //     if (newFixedNotes[newFixedNotes.length - 1].noteType) {
-//             //         newFixedNotes[newFixedNotes.length - 1].tied = `<notations>
-//             // 		<tied type="stop"/>
-//             //  </notations>`;
-//             //     }
-//         }
-//     }
-
-//     newFixedNotes.sort((a, b) => {
-//         if (a.startTime === b.startTime) {
-//             return a.endTime - b.endTime;
-//         }
-//         return a.startTime - b.startTime;
-//     });
-
-//     // Start of the XML document
-//     let musicXML = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-// 	<!DOCTYPE score-partwise PUBLIC
-// 		"-//Recordare//DTD MusicXML 4.0 Partwise//EN"
-// 		"http://www.musicxml.org/dtds/partwise.dtd">
-// 	<score-partwise version="4.0">
-// 	  	<part-list>
-// 			<score-part id="P1">
-// 		  		<part-name>Music</part-name>
-// 			</score-part>
-// 	  	</part-list>
-// 	  	<part id="P1">
-// 		  	`;
-
-//     musicXML += `
-// 				<measure number="1">
-// 				<attributes>
-// 					<divisions>256</divisions>
-// 					<key>
-// 					  <fifths>0</fifths>
-// 					</key>
-// 					<staves>2</staves>
-// 				  <clef number="1">
-// 						<sign>G</sign>
-// 						<line>2</line>
-// 				  </clef>
-// 				  <clef number="2">
-// 						<sign>F</sign>
-// 						<line>4</line>
-// 				  </clef>
-// 			  </attributes>`;
-
-//     // Convert each note to MusicXML
-//     let divisions = 0;
-//     for (let [i, note] of newFixedNotes.entries()) {
-//         // divisions += note.duration;
-//         // if (divisions % (256 * 3) === 0) {
-//         //     if (divisions % (256 * 3) === 0) {
-//         //         musicXML += `
-//         // 		</measure>`;
-//         //     }
-
-//         //     musicXML += `
-//         // 		<measure number="${Math.floor(divisions / (256 * 3)) + 1}">
-//         // 		<print new-system="yes"/>
-//         // 		`;
-//         // }
-
-//         musicXML += `
-// 			<note>
-// 				${i > 0 ? (newFixedNotes[i - 1].startTime === note.startTime ? "<chord />" : "") : ""}
-// 				<pitch>
-// 					    <step>${getNote(note.pitch).step}</step>
-// 					    <alter>${getNote(note.pitch).alter}</alter>
-// 					    <octave>${getNote(note.pitch).octave}</octave>
-// 				</pitch>
-// 				<duration>${note.duration}</duration>
-// 				<type>${note.noteType}</type>
-// 				${note.tied ? note.tied : ""}
-// 			</note>
-// 			`;
-//     }
-
-//     musicXML += `
-// 				</measure>`;
-
-//     // End of the XML document
-//     musicXML += `
-// 		</part>
-// 	</score-partwise>`;
-
-//     return musicXML;
-// }
 
 // This only uses sharps and only works for C Major fix later
 function getNote(midiPitch) {
