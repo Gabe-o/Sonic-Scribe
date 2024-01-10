@@ -11,6 +11,7 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
+    "https-serve": "http-server public/ -S -C certs/localhost.pem -K certs/localhost-key.pem -p 8000",
     "clean": "gatsby clean",
     "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "test": "jest"
