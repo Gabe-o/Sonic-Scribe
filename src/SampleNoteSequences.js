@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-import * as mm from "@magenta/music";
-
-export const TWINKLE_TWINKLE = new mm.NoteSequence({
+export const TWINKLE_TWINKLE = {
     notes: [
         { pitch: 60, startTime: 0.0, endTime: 0.5 },
         { pitch: 60, startTime: 0.5, endTime: 1.0 },
@@ -35,9 +33,105 @@ export const TWINKLE_TWINKLE = new mm.NoteSequence({
         { pitch: 60, startTime: 7.0, endTime: 8.0 },
     ],
     totalTime: 8,
-});
+};
 
-export const DOUBLE_SCALE = new mm.NoteSequence({
+export const TWINKLE_TWINKLE_2 = {
+    notes: [
+        { pitch: 60, velocity: 61, startTime: 0.608, endTime: 1.28 },
+        { pitch: 48, velocity: 55, startTime: 0.64, endTime: 1.8880000000000001 },
+        { pitch: 60, velocity: 71, startTime: 1.28, endTime: 1.8880000000000001 },
+        { pitch: 52, velocity: 57, startTime: 0.64, endTime: 2.336 },
+        { pitch: 67, velocity: 75, startTime: 1.8880000000000001, endTime: 2.528 },
+        { pitch: 60, velocity: 72, startTime: 1.8880000000000001, endTime: 3.168 },
+        { pitch: 48, velocity: 65, startTime: 1.8880000000000001, endTime: 3.36 },
+        { pitch: 67, velocity: 71, startTime: 2.528, endTime: 3.36 },
+        { pitch: 69, velocity: 74, startTime: 3.168, endTime: 3.8080000000000003 },
+        { pitch: 60, velocity: 63, startTime: 3.168, endTime: 4.416 },
+        { pitch: 69, velocity: 72, startTime: 3.8080000000000003, endTime: 4.5760000000000005 },
+        { pitch: 41, velocity: 58, startTime: 3.168, endTime: 5.6000000000000005 },
+        { pitch: 48, velocity: 68, startTime: 4.416, endTime: 5.856 },
+        { pitch: 67, velocity: 72, startTime: 4.416, endTime: 5.92 },
+        { pitch: 65, velocity: 72, startTime: 5.696, endTime: 6.336 },
+        { pitch: 60, velocity: 68, startTime: 4.416, endTime: 6.912 },
+        { pitch: 41, velocity: 64, startTime: 5.696, endTime: 7.232 },
+        { pitch: 65, velocity: 71, startTime: 6.336, endTime: 7.36 },
+        { pitch: 64, velocity: 72, startTime: 6.944, endTime: 7.5840000000000005 },
+        { pitch: 57, velocity: 68, startTime: 5.696, endTime: 7.712 },
+        { pitch: 55, velocity: 64, startTime: 6.944, endTime: 8.224 },
+        { pitch: 48, velocity: 65, startTime: 6.944, endTime: 8.32 },
+        { pitch: 64, velocity: 74, startTime: 7.5840000000000005, endTime: 8.352 },
+        { pitch: 62, velocity: 76, startTime: 8.224, endTime: 8.864 },
+        { pitch: 43, velocity: 69, startTime: 8.224, endTime: 9.568 },
+        { pitch: 55, velocity: 68, startTime: 8.224, endTime: 9.6 },
+        { pitch: 62, velocity: 72, startTime: 8.864, endTime: 9.632 },
+        { pitch: 48, velocity: 68, startTime: 9.472, endTime: 10.752 },
+        { pitch: 60, velocity: 72, startTime: 9.472, endTime: 10.752 },
+        { pitch: 52, velocity: 67, startTime: 9.472, endTime: 10.944 },
+        { pitch: 67, velocity: 74, startTime: 10.752, endTime: 11.392 },
+        { pitch: 67, velocity: 73, startTime: 11.392, endTime: 12.128 },
+        { pitch: 48, velocity: 66, startTime: 10.752, endTime: 12.192 },
+        { pitch: 65, velocity: 72, startTime: 12, endTime: 12.64 },
+        { pitch: 41, velocity: 62, startTime: 12, endTime: 13.568 },
+        { pitch: 60, velocity: 71, startTime: 10.752, endTime: 13.792 },
+        { pitch: 64, velocity: 72, startTime: 13.280000000000001, endTime: 13.92 },
+        { pitch: 65, velocity: 71, startTime: 12.64, endTime: 13.984 },
+        { pitch: 57, velocity: 66, startTime: 12, endTime: 14.208 },
+        { pitch: 43, velocity: 67, startTime: 13.280000000000001, endTime: 14.56 },
+        { pitch: 55, velocity: 65, startTime: 13.280000000000001, endTime: 14.56 },
+        { pitch: 64, velocity: 74, startTime: 13.92, endTime: 14.752 },
+        { pitch: 43, velocity: 69, startTime: 14.56, endTime: 15.904 },
+        { pitch: 55, velocity: 68, startTime: 14.56, endTime: 15.936 },
+        { pitch: 62, velocity: 74, startTime: 14.528, endTime: 15.936 },
+        { pitch: 67, velocity: 73, startTime: 15.808, endTime: 16.448 },
+        { pitch: 48, velocity: 70, startTime: 15.808, endTime: 17.216 },
+        { pitch: 67, velocity: 72, startTime: 16.448, endTime: 17.248 },
+        { pitch: 65, velocity: 73, startTime: 17.056, endTime: 17.696 },
+        { pitch: 41, velocity: 63, startTime: 17.056, endTime: 18.752 },
+        { pitch: 64, velocity: 74, startTime: 18.336000000000002, endTime: 18.976 },
+        { pitch: 65, velocity: 71, startTime: 17.696, endTime: 19.072 },
+        { pitch: 60, velocity: 73, startTime: 15.808, endTime: 19.52 },
+        { pitch: 43, velocity: 68, startTime: 18.336000000000002, endTime: 19.616 },
+        { pitch: 55, velocity: 65, startTime: 18.336000000000002, endTime: 19.616 },
+        { pitch: 64, velocity: 74, startTime: 18.976, endTime: 19.968 },
+        { pitch: 57, velocity: 67, startTime: 17.056, endTime: 20.288 },
+        { pitch: 43, velocity: 68, startTime: 19.616, endTime: 20.896 },
+        { pitch: 55, velocity: 67, startTime: 19.616, endTime: 21.024 },
+        { pitch: 62, velocity: 75, startTime: 19.616, endTime: 21.152 },
+        { pitch: 60, velocity: 72, startTime: 20.864, endTime: 21.504 },
+        { pitch: 48, velocity: 69, startTime: 20.864, endTime: 22.112000000000002 },
+        { pitch: 60, velocity: 71, startTime: 21.504, endTime: 22.112000000000002 },
+        { pitch: 67, velocity: 75, startTime: 22.112000000000002, endTime: 22.752 },
+        { pitch: 60, velocity: 71, startTime: 22.112000000000002, endTime: 23.392 },
+        { pitch: 52, velocity: 67, startTime: 20.864, endTime: 23.424 },
+        { pitch: 67, velocity: 71, startTime: 22.752, endTime: 23.616 },
+        { pitch: 48, velocity: 65, startTime: 22.112000000000002, endTime: 23.744 },
+        { pitch: 69, velocity: 75, startTime: 23.392, endTime: 24.032 },
+        { pitch: 60, velocity: 68, startTime: 23.392, endTime: 24.64 },
+        { pitch: 41, velocity: 59, startTime: 23.392, endTime: 25.632 },
+        { pitch: 69, velocity: 72, startTime: 24.032, endTime: 25.92 },
+        { pitch: 67, velocity: 72, startTime: 24.64, endTime: 26.208000000000002 },
+        { pitch: 65, velocity: 72, startTime: 25.92, endTime: 26.560000000000002 },
+        { pitch: 48, velocity: 69, startTime: 24.64, endTime: 26.624000000000002 },
+        { pitch: 41, velocity: 63, startTime: 25.92, endTime: 27.584 },
+        { pitch: 64, velocity: 73, startTime: 27.168, endTime: 27.808 },
+        { pitch: 65, velocity: 70, startTime: 26.560000000000002, endTime: 27.968 },
+        { pitch: 55, velocity: 64, startTime: 27.168, endTime: 28.448 },
+        { pitch: 57, velocity: 68, startTime: 25.92, endTime: 28.48 },
+        { pitch: 48, velocity: 63, startTime: 27.168, endTime: 28.608 },
+        { pitch: 60, velocity: 67, startTime: 24.64, endTime: 28.64 },
+        { pitch: 64, velocity: 73, startTime: 27.808, endTime: 28.64 },
+        { pitch: 62, velocity: 75, startTime: 28.448, endTime: 29.088 },
+        { pitch: 43, velocity: 68, startTime: 28.448, endTime: 29.76 },
+        { pitch: 62, velocity: 71, startTime: 29.088, endTime: 29.952 },
+        { pitch: 55, velocity: 67, startTime: 28.448, endTime: 29.984 },
+        { pitch: 52, velocity: 67, startTime: 29.696, endTime: 30.976 },
+        { pitch: 48, velocity: 69, startTime: 29.696, endTime: 31.04 },
+        { pitch: 60, velocity: 71, startTime: 29.696, endTime: 33.28 },
+    ],
+    totalTime: 34,
+};
+
+export const DOUBLE_SCALE = {
     notes: [
         { pitch: 60, quantizedStartStep: 0, quantizedEndStep: 1, program: 0 },
         { pitch: 61, quantizedStartStep: 1, quantizedEndStep: 2, program: 0 },
@@ -69,9 +163,46 @@ export const DOUBLE_SCALE = new mm.NoteSequence({
     timeSignatures: [{ time: 0, numerator: 2, denominator: 4 }],
     totalQuantizedSteps: 24,
     quantizationInfo: { stepsPerQuarter: 2 },
-});
+};
 
-export const STAFF_USE_CASES = new mm.NoteSequence({
+export const DOUBLE_SCALE_TIME_SIG_CHANGE = {
+    notes: [
+        { pitch: 60, quantizedStartStep: 0, quantizedEndStep: 1, program: 0 },
+        { pitch: 61, quantizedStartStep: 1, quantizedEndStep: 2, program: 0 },
+        { pitch: 62, quantizedStartStep: 2, quantizedEndStep: 3, program: 0 },
+        { pitch: 63, quantizedStartStep: 3, quantizedEndStep: 4, program: 0 },
+        { pitch: 64, quantizedStartStep: 4, quantizedEndStep: 5, program: 0 },
+        { pitch: 65, quantizedStartStep: 5, quantizedEndStep: 6, program: 0 },
+        { pitch: 66, quantizedStartStep: 6, quantizedEndStep: 7, program: 0 },
+        { pitch: 67, quantizedStartStep: 7, quantizedEndStep: 8, program: 0 },
+        { pitch: 68, quantizedStartStep: 8, quantizedEndStep: 9, program: 0 },
+        { pitch: 69, quantizedStartStep: 9, quantizedEndStep: 10, program: 0 },
+        { pitch: 70, quantizedStartStep: 10, quantizedEndStep: 11, program: 0 },
+        { pitch: 71, quantizedStartStep: 11, quantizedEndStep: 12, program: 0 },
+        { pitch: 72, quantizedStartStep: 12, quantizedEndStep: 13, program: 0 },
+        { pitch: 73, quantizedStartStep: 13, quantizedEndStep: 14, program: 0 },
+        { pitch: 74, quantizedStartStep: 14, quantizedEndStep: 15, program: 0 },
+        { pitch: 75, quantizedStartStep: 15, quantizedEndStep: 16, program: 0 },
+        { pitch: 76, quantizedStartStep: 16, quantizedEndStep: 17, program: 0 },
+        { pitch: 77, quantizedStartStep: 17, quantizedEndStep: 18, program: 0 },
+        { pitch: 78, quantizedStartStep: 18, quantizedEndStep: 19, program: 0 },
+        { pitch: 79, quantizedStartStep: 19, quantizedEndStep: 20, program: 0 },
+        { pitch: 80, quantizedStartStep: 20, quantizedEndStep: 21, program: 0 },
+        { pitch: 81, quantizedStartStep: 21, quantizedEndStep: 22, program: 0 },
+        { pitch: 82, quantizedStartStep: 22, quantizedEndStep: 23, program: 0 },
+        { pitch: 83, quantizedStartStep: 23, quantizedEndStep: 24, program: 0 },
+    ],
+    tempos: [{ time: 0, qpm: 140 }],
+    keySignatures: [{ time: 0, key: 0 }],
+    timeSignatures: [
+        { time: 0, numerator: 2, denominator: 4 },
+        { time: 2, numerator: 4, denominator: 4 },
+    ],
+    totalQuantizedSteps: 24,
+    quantizationInfo: { stepsPerQuarter: 2 },
+};
+
+export const STAFF_USE_CASES = {
     notes: [
         { pitch: 65, startTime: 0, endTime: 4, program: 0, velocity: 128 },
         { pitch: 65, startTime: 8, endTime: 10, program: 0, velocity: 112 },
@@ -97,9 +228,9 @@ export const STAFF_USE_CASES = new mm.NoteSequence({
     keySignatures: [{ time: 0, key: 0 }],
     timeSignatures: [{ time: 0, numerator: 4, denominator: 4 }],
     totalTime: 36,
-});
+};
 
-export const ANNA_MAGDALENA_BACH = new mm.NoteSequence({
+export const ANNA_MAGDALENA_BACH = {
     ticksPerQuarter: 480,
     timeSignatures: [{ time: 0, numerator: 3, denominator: 4 }],
     tempos: [{ time: 0, qpm: 120 }],
@@ -1943,4 +2074,4 @@ export const ANNA_MAGDALENA_BACH = new mm.NoteSequence({
     ],
     totalTime: 48,
     sourceInfo: { encodingType: 3, parser: 6 },
-});
+};
