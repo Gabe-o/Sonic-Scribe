@@ -32,18 +32,26 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         file = event.files[0];
         console.log(file);
 
-        // Uploads file so it can be used elsewhere
-        if (onFileUpload) onFileUpload(file);
-
-        // Save file locally if you need it in a url e.x. localhost:8000/{uuid}
-        // url = await saveFileLocally(file);
-        toast.current.show({ severity: "success", summary: "Success", detail: "Uploaded " + file.name, life: 2000 });
+        setSelectedFile(file);
     }
 
     const onError = (event) => {
         // event.files == files that failed to upload
         file = undefined;
     };
+
+    const handleConvert = () => {
+        if (selectedFile) {
+            // Uploads file so it can be used elsewhere
+            if (onFileUpload) onFileUpload(selectedFile);
+            // Save file locally if you need it in a url e.x. localhost:8000/{uuid}
+            // url = await saveFileLocally(file);
+            toast.current.show({ severity: "success", summary: "Success", detail: "Uploaded " + selectedFile.name, life: 2000 });
+        }
+        else {
+            alert("Please select a file");
+        }
+    }
 
     const uploadButtonContainerStyles = {
         display: "flex",
@@ -59,7 +67,7 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "1.3rem",
+        fontSize: "1rem",
         marginRight: "10px"
     }
 
@@ -70,7 +78,8 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        content: "Hi there"
     }
 
     const convertButtonStyles = {
@@ -84,7 +93,11 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         color: "white",
         fontWeight: "200",
         border: "0.5px solid white",
-        marginTop: "10%"
+        marginTop: "10%",
+
+        ":hover": {
+            backgroundColor: "white", 
+          },
     }
 
     return (
@@ -98,7 +111,7 @@ const UploadButtonComponent = ({ onFileUpload }) => {
                 justifyContent: "center"
             }}>
                 <div style={uploadFileTextStyles}>
-
+                    {selectedFile && selectedFile.name}
                 </div>
                 <div>
                     <Toast ref={toast} />
@@ -114,9 +127,9 @@ const UploadButtonComponent = ({ onFileUpload }) => {
                     />
                 </div>
             </div>
-            <div style={convertButtonStyles}>
+            <button style={convertButtonStyles} onClick={() => handleConvert()}>
                 Convert
-            </div>
+            </button>
         </div>
     );
 };

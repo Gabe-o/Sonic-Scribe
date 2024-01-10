@@ -78,6 +78,10 @@ const TranscribePage = () => {
         document.body.removeChild(link);
     }
 
+    const handleTutorialButton = () => {
+
+    }
+
     const audioTranscriberTextStyles = {
         color: "white",
         fontSize: "3rem"
@@ -94,7 +98,7 @@ const TranscribePage = () => {
         color: "white",
         fontWeight: "200",
         border: "0.5px solid white",
-        marginTop: "5%"
+        marginTop: "8%"
     }
 
     const rightArrowStyles = {
@@ -115,7 +119,8 @@ const TranscribePage = () => {
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            height: "calc(100vh - 96px)"
+                            height: "calc(100vh - 100px)",
+                            margin: "0 40px"
                          }}>
                             <div>
                                 <div style={{ 
@@ -126,10 +131,10 @@ const TranscribePage = () => {
                                 }}>
                                     <h1 style={audioTranscriberTextStyles}>Audio Transcriber</h1>
                                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
-                                    <div style={tutorialButtonStyles}>
+                                    <button style={tutorialButtonStyles} onClick={() => handleTutorialButton()}>
                                         <p>Tutorial</p>
                                         <img src={RightArrow} alt="right-arrow" style={rightArrowStyles}></img>
-                                    </div>
+                                    </button>
                                 </div>
                                 {file &&
                                     (noteSequence ? (
