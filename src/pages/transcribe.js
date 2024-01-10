@@ -82,11 +82,6 @@ const TranscribePage = () => {
 
     }
 
-    const audioTranscriberTextStyles = {
-        color: "white",
-        fontSize: "3rem"
-    }
-
     const tutorialButtonStyles = {
         width: "150px",
         height: "35px",
@@ -98,7 +93,7 @@ const TranscribePage = () => {
         color: "white",
         fontWeight: "200",
         border: "0.5px solid white",
-        marginTop: "8%"
+        marginTop: "5%"
     }
 
     const rightArrowStyles = {
@@ -129,7 +124,12 @@ const TranscribePage = () => {
                                     alignItems: "center",
 
                                 }}>
-                                    <h1 style={audioTranscriberTextStyles}>Audio Transcriber</h1>
+                                    <h1 style={{ 
+                                        color: "white",
+                                        fontSize: "3.5rem",
+                                     }}>
+                                        Audio Transcriber
+                                    </h1>
                                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
                                     <button style={tutorialButtonStyles} onClick={() => handleTutorialButton()}>
                                         <p>Tutorial</p>
@@ -146,8 +146,15 @@ const TranscribePage = () => {
                                         <p>Transcribing ...</p>
                                     ))}
                             </div>
-                            <div style={{ color: "white" }}>
-                                Second one
+                            <div>
+                                <h3 style={{ 
+                                    color: "white",
+                                    fontWeight: "200",
+                                    fontSize: "1.7rem"
+                                 }}>Previous Transcriptions</h3>
+                                 <div>
+
+                                 </div>
                             </div>
                         </div>
                     ) : (

@@ -46,7 +46,13 @@ const UploadButtonComponent = ({ onFileUpload }) => {
             if (onFileUpload) onFileUpload(selectedFile);
             // Save file locally if you need it in a url e.x. localhost:8000/{uuid}
             // url = await saveFileLocally(file);
-            toast.current.show({ severity: "success", summary: "Success", detail: "Uploaded " + selectedFile.name, life: 2000 });
+            toast.current.show({ 
+                severity: "success", 
+                summary: "Success", 
+                detail: "Uploaded " + selectedFile.name, 
+                life: 2000, 
+                style: { color: "white" }, 
+            });
         }
         else {
             alert("Please select a file");
@@ -79,7 +85,6 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        content: "Hi there"
     }
 
     const convertButtonStyles = {
