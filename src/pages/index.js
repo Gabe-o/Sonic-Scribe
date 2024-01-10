@@ -6,6 +6,7 @@ import * as mm from "@magenta/music";
 import { noteSequenceToMusicXML } from "../noteSequenceToMusicXML";
 import UploadButtonComponent from "../components/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../transcribe";
+import { Link } from "gatsby";
 
 const IndexPage = () => {
     const [modelReady, setModelReady] = useState(false);
@@ -111,6 +112,10 @@ const IndexPage = () => {
             >
                 Download MIDI
             </button>
+
+      {/* Replace the button with Gatsby's Link */}
+      <Link to="/resources">External Resources and Links</Link>
+
         </>
     );
 };
