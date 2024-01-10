@@ -7,6 +7,7 @@ export default function StaffVisualizer({ noteSequence }) {
     const visualizerRef = useRef(null);
 
     useEffect(() => {
+        // inits visualizer once the note sequence has been parsed
         if (noteSequence) {
             let notes = noteSequence;
             if (!notes.quantizationInfo) notes = quantizeNoteSequence(noteSequence, 4);

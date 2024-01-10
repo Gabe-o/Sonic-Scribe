@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
+/**
+ * This file has a bunch of sample note sequences that can be used for testing 
+ */
+
 export const TWINKLE_TWINKLE = {
     notes: [
         { pitch: 60, startTime: 0.0, endTime: 0.5 },

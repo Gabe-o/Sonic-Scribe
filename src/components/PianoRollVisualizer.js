@@ -9,6 +9,7 @@ export default function PianoRollVisualizer({ visualizerType, noteSequence }) {
     const [player, setPlayer] = useState(null);
 
     useEffect(() => {
+        // init visualizer once the note sequence has been parsed
         if (noteSequence) {
             let notes = noteSequence;
             if (!notes.quantizationInfo) notes = quantizeNoteSequence(noteSequence);
