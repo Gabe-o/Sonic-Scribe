@@ -9,3 +9,7 @@
   --secondary-color: #cbb593;
   --accent-color: #ffffff;
 }
+
+body {
+  overflow-x: hidden;
+}
