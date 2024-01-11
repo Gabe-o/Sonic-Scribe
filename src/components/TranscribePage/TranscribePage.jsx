@@ -99,30 +99,8 @@ const TranscribePage = () => {
   };
 
   const handleConvertMore = () => {
-    // setFileUploaded(false);
-    console.log("Hi");
     window.location.reload();
   }
-
-  const tutorialButtonStyles = {
-    width: "150px",
-    height: "35px",
-    backgroundColor: "#2d2d2d",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-    fontWeight: "200",
-    border: "0.5px solid white",
-    marginTop: "5%",
-  };
-
-  const rightArrowStyles = {
-    height: "0.7rem",
-    width: "0.7rem",
-    marginLeft: "5px",
-  };
 
   return (
     <>
@@ -212,7 +190,7 @@ const TranscribePage = () => {
           </button> */}
         </div>
         <div style={{ display: fileUploaded ? "block" : "none" }}>
-          <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore}/>
+          <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore} />
         </div>
       </div>
     </>
