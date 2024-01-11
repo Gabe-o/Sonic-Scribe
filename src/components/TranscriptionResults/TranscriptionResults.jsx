@@ -9,16 +9,17 @@ import "./TranscriptionResults.css";
 
 const TranscriptionResults = ({ noteSequence }) => { 
     const [pianoRoll, setPianoRoll] = useState(true);
+    const [audioPlayback, setAudioPlayback] = useState(false);
 
     return (
         <div class="transcriptionResults-bg">
             <h1 class="transcriptionResults-title">Your audio has been converted:</h1>
             <div class="transcriptionResults-preview">
-                { pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} /> : <StaffVisualizer noteSequence={noteSequence} /> }
+                { pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback}/> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback}/> }
             </div>
             <div class="transcriptionResults-buttonContainer">
                 <XmlDownloadButton noteSequence={noteSequence}/>
-                <button class="transcriptionResults-switchButton" 
+                <button class="transcriptionResults-switchButton" disabled={audioPlayback}
                 onClick={() => {
                     setPianoRoll(!pianoRoll);
                 }}

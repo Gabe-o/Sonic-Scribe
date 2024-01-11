@@ -6,7 +6,7 @@ import "./PianoRollVisualizer.css";
 import PlaySVG from "../../images/play-button.svg";
 import StopSVG from "../../images/stop-button.svg";
 
-export default function PianoRollVisualizer({ noteSequence }) {
+export default function PianoRollVisualizer({ noteSequence, setAudioPlayback }) {
 	const visualizerRef = useRef(null);
 	const [visualizer, setVisualizer] = useState(null);
 	const [player, setPlayer] = useState(null);
@@ -36,7 +36,10 @@ export default function PianoRollVisualizer({ noteSequence }) {
 			setPlayer(
 				new mm.Player(false, {
 					run: (note) => visualizer.redraw(note),
-					stop: () => {setPlaying(false)}
+					stop: () => {
+						setPlaying(false);
+						if(setAudioPlayback) setAudioPlayback(false);
+					}
 				})
 			);
 		}
@@ -52,6 +55,7 @@ export default function PianoRollVisualizer({ noteSequence }) {
 					onClick={() => {
 						player.start(noteSequence);
 						setPlaying(true);
+						if(setAudioPlayback) setAudioPlayback(true);
 					}}
 				>
 					<img src={PlaySVG} alt="PLAY" width={100} height={100} />
@@ -61,6 +65,7 @@ export default function PianoRollVisualizer({ noteSequence }) {
 					onClick={() => {
 						player.stop();
 						setPlaying(false);
+						if(setAudioPlayback) setAudioPlayback(false);
 					}}
 				>
 					<img src={StopSVG} alt="STOP" width={100} height={100} />
