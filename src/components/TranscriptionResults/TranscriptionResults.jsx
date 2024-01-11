@@ -7,28 +7,32 @@ import MidiDownloadButton from "../MidiDownloadButton/MidiDownloadButton";
 import "./TranscriptionResults.css";
 
 
-const TranscriptionResults = ({ noteSequence }) => { 
+const TranscriptionResults = ({ noteSequence }) => {
     const [pianoRoll, setPianoRoll] = useState(true);
     const [audioPlayback, setAudioPlayback] = useState(false);
+
+    const handleConvertMore = () => {
+        console.log("hi");
+    }
 
     return (
         <div class="transcriptionResults-bg">
             <h1 class="transcriptionResults-title">Your audio has been converted:</h1>
             <div class="transcriptionResults-preview">
-                { pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback}/> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback}/> }
+                {pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} /> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />}
             </div>
             <div class="transcriptionResults-buttonContainer">
-                <XmlDownloadButton noteSequence={noteSequence}/>
+                <XmlDownloadButton noteSequence={noteSequence} />
                 <button class="transcriptionResults-switchButton" disabled={audioPlayback}
-                onClick={() => {
-                    setPianoRoll(!pianoRoll);
-                }}
+                    onClick={() => {
+                        setPianoRoll(!pianoRoll);
+                    }}
                 >
                     Switch View
                 </button>
-                <MidiDownloadButton noteSequence={noteSequence}/>
+                <MidiDownloadButton noteSequence={noteSequence} />
             </div>
-            <button class="transcriptionResults-convertButton">Convert More</button>
+            <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
         </div>
     );
 }

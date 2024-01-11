@@ -18,6 +18,8 @@ const TranscribePage = () => {
   const [file, setFile] = useState(null);
   const [noteSequence, setNoteSequence] = useState(null);
 
+  const [fileUploaded, setFileUploaded] = useState(false);
+
   useEffect(() => {
     // loading onsets and frames
     const init = async () => {
@@ -30,6 +32,12 @@ const TranscribePage = () => {
 
     init();
   }, []);
+
+  useEffect(() => {
+    if (noteSequence) {
+      setFileUploaded(true);
+    }
+  }, [noteSequence]);
 
   useEffect(() => {
     // waiting for a file
@@ -86,7 +94,9 @@ const TranscribePage = () => {
     document.body.removeChild(link);
   }
 
-  const handleTutorialButton = () => { };
+  const handleTutorialButton = () => {
+
+  };
 
   const tutorialButtonStyles = {
     width: "150px",
@@ -114,68 +124,70 @@ const TranscribePage = () => {
         <div className="transcribe-background-image" />
         <div className="transcribe-container">
           <NavigationBar />
-          {modelReady ? (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                height: "calc(100vh - 100px)",
-                margin: "0 40px",
-              }}
-            >
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <h1
+          <div style={{ display: fileUploaded ? "none" : "block" }}>
+            {modelReady ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  height: "calc(100vh - 100px)",
+                  margin: "0 40px",
+                }}
+              >
+                <div>
+                  <div
                     style={{
-                      color: "white",
-                      fontSize: "3.5rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
                     }}
                   >
-                    Audio Transcriber
-                  </h1>
+                    <h1
+                      style={{
+                        color: "white",
+                        fontSize: "3.5rem",
+                      }}
+                    >
+                      Audio Transcriber
+                    </h1>
 
-                  <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
-                  <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
-                    <p>Tutorial</p>
-                    <img src={RightArrow} alt="right-arrow"></img>
-                  </button>
+                    <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
+                    <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
+                      <p>Tutorial</p>
+                      <img src={RightArrow} alt="right-arrow"></img>
+                    </button>
+                  </div>
+                  {file &&
+                    (noteSequence ? (
+                      <>
+                        <PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
+                        <StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
+                      </>
+                    ) : (
+                      <p>Transcribing ...</p>
+                    ))}
                 </div>
-                {file &&
-                  (noteSequence ? (
-                    <>
-                      <PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
-                      <StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
-                    </>
-                  ) : (
-                    <p>Transcribing ...</p>
-                  ))}
+                <div>
+                  <h3
+                    style={{
+                      color: "white",
+                      fontWeight: "200",
+                      fontSize: "1.7rem",
+                    }}
+                  >
+                    Previous Transcriptions
+                  </h3>
+                  <div></div>
+                </div>
               </div>
-              <div>
-                <h3
-                  style={{
-                    color: "white",
-                    fontWeight: "200",
-                    fontSize: "1.7rem",
-                  }}
-                >
-                  Previous Transcriptions
-                </h3>
-                <div></div>
-              </div>
-            </div>
-          ) : (
-            <p>Loading Model...</p>
-          )}
+            ) : (
+              <p>Loading Model...</p>
+            )}
+          </div>
 
-          <button
+          {/* <button
             onClick={async () => {
               const musicXML = await noteSequenceToMusicXML(noteSequence);
               downloadFile(musicXML, "music.xml", "application/octet-stream");
@@ -191,9 +203,11 @@ const TranscribePage = () => {
             }}
           >
             Download MIDI
-          </button>
+          </button> */}
         </div>
-        <TranscriptionResults noteSequence={noteSequence} />
+        <div style={{ display: fileUploaded ? "block" : "none" }}>
+          <TranscriptionResults noteSequence={noteSequence} />
+        </div>
       </div>
     </>
   );
