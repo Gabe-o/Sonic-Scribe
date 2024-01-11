@@ -1,7 +1,7 @@
 .transcriptionResults-bg {
     display: flex;
     color: white;
-    background-color: rgb(30,30,30);
+    background-color: rgb(30, 30, 30);
     flex-direction: column;
     align-items: center;
     width: 100vw;
@@ -20,7 +20,7 @@
     margin-top: 20px;
 }
 
-.transcriptionResults-switchButton {
+/* .transcriptionResults-switchButton {
     background: none;
 	color: inherit;
 	border: none;
@@ -40,7 +40,7 @@
     margin-inline: 40px;
     text-decoration: none;
     color: black;
-}
+} */
 
 .transcriptionResults-switchButton:disabled {
     cursor: not-allowed;
@@ -49,15 +49,15 @@
 
 .transcriptionResults-convertButton {
     background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
     width: 160px;
     height: 40px;
-    background-color: rgb(20,20,20);
+    background-color: rgb(20, 20, 20);
     display: flex;
     flex-direction: row;
     align-items: center;

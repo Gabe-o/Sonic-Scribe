@@ -98,6 +98,12 @@ const TranscribePage = () => {
 
   };
 
+  const handleConvertMore = () => {
+    // setFileUploaded(false);
+    console.log("Hi");
+    window.location.reload();
+  }
+
   const tutorialButtonStyles = {
     width: "150px",
     height: "35px",
@@ -207,6 +213,7 @@ const TranscribePage = () => {
         </div>
         <div style={{ display: fileUploaded ? "block" : "none" }}>
           <TranscriptionResults noteSequence={noteSequence} />
+          <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
         </div>
       </div>
     </>

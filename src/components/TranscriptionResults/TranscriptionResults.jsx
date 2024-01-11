@@ -5,15 +5,12 @@ import StaffVisualizer from "../StaffVisualizer/StaffVisualizer";
 import XmlDownloadButton from "../XmlDownloadButton/XmlDownloadButton";
 import MidiDownloadButton from "../MidiDownloadButton/MidiDownloadButton";
 import "./TranscriptionResults.css";
+import TranscribePage from "../TranscribePage/TranscribePage";
 
 
 const TranscriptionResults = ({ noteSequence }) => {
     const [pianoRoll, setPianoRoll] = useState(true);
     const [audioPlayback, setAudioPlayback] = useState(false);
-
-    const handleConvertMore = () => {
-        console.log("hi");
-    }
 
     return (
         <div class="transcriptionResults-bg">
@@ -32,7 +29,6 @@ const TranscriptionResults = ({ noteSequence }) => {
                 </button>
                 <MidiDownloadButton noteSequence={noteSequence} />
             </div>
-            <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
         </div>
     );
 }
