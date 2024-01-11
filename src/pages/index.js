@@ -1,5 +1,5 @@
 import * as React from "react";
-import NavigationBar from "../components/NavigationBar";
+import NavigationBar from "../components/NavigationBar/NavigationBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { Container } from "react-bootstrap";

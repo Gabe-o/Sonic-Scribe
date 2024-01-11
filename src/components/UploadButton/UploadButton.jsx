@@ -3,6 +3,9 @@ import React, { useRef, useState } from "react";
 import { FileUpload } from "primereact/fileupload";
 import { Toast } from "primereact/toast";
 
+// styles
+import "./UploadButton.css";
+
 const UploadButtonComponent = ({ onFileUpload }) => {
     const toast = useRef(null);
     let file = undefined;
@@ -46,12 +49,12 @@ const UploadButtonComponent = ({ onFileUpload }) => {
             if (onFileUpload) onFileUpload(selectedFile);
             // Save file locally if you need it in a url e.x. localhost:8000/{uuid}
             // url = await saveFileLocally(file);
-            toast.current.show({ 
-                severity: "success", 
-                summary: "Success", 
-                detail: "Uploaded " + selectedFile.name, 
-                life: 2000, 
-                style: { color: "white" }, 
+            toast.current.show({
+                severity: "success",
+                summary: "Success",
+                detail: "Uploaded " + selectedFile.name,
+                life: 2000,
+                style: { color: "white" },
             });
         }
         else {
@@ -101,17 +104,17 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         marginTop: "10%",
 
         ":hover": {
-            backgroundColor: "white", 
-          },
+            backgroundColor: "white",
+        },
     }
 
     return (
         <div style={uploadButtonContainerStyles}>
-            <div style={{ 
-                display: "flex", 
-                flexDirection: "row", 
-                width: "100%", 
-                marginTop: "5vh" ,
+            <div style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "100%",
+                marginTop: "5vh",
                 alignItems: "center",
                 justifyContent: "center"
             }}>

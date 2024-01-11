@@ -3,6 +3,9 @@ import React from "react";
 import { useEffect, useRef } from "react";
 import * as mm from "@magenta/music";
 
+// styles
+import "./StaffVisualizer.css";
+
 export default function StaffVisualizer({ noteSequence }) {
     const visualizerRef = useRef(null);
 
