@@ -162,7 +162,7 @@ const TranscribePage = () => {
                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
                     <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
                       <p>Tutorial</p>
-                      <img src={RightArrow} alt="right-arrow"></img>
+                      {/* <div></div> */}
                     </button>
                   </div>
                   {file &&
@@ -212,8 +212,7 @@ const TranscribePage = () => {
           </button> */}
         </div>
         <div style={{ display: fileUploaded ? "block" : "none" }}>
-          <TranscriptionResults noteSequence={noteSequence} />
-          <button class="transcriptionResults-convertButton" style={{ margin: "50px" }} onClick={() => handleConvertMore()}>Convert More</button>
+          <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore}/>
         </div>
       </div>
     </>
