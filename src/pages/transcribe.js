@@ -2,15 +2,13 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import StaffVisualizer from "../components/StaffVisualizer/StaffVisualizer";
 import PianoRollVisualizer from "../components/PianoRollVisualizer/PianoRollVisualizer";
-import NavigationBar from "../components/NavigationBar";
+import NavigationBar from "../components/NavigationBar/NavigationBar";
 import BG from "../images/headphone-bg.png";
 import * as mm from "@magenta/music";
 import { noteSequenceToMusicXML } from "../noteSequenceToMusicXML";
-import UploadButtonComponent from "../components/UploadButton";
+import UploadButtonComponent from "../components/UploadButton/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../transcribe";
 import RightArrow from "../images/right-arrow.png";
-
-import Example from "../components/Example/Example";
 import TranscriptionResults from "../components/TranscriptionResults/TranscriptionResults";
 
 const TranscribePage = () => {
@@ -142,15 +140,21 @@ const TranscribePage = () => {
 										Audio Transcriber
 									</h1>
 
-									<Example />
-
 									<UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
 									<button style={tutorialButtonStyles} onClick={() => handleTutorialButton()}>
 										<p>Tutorial</p>
 										<img src={RightArrow} alt="right-arrow" style={rightArrowStyles}></img>
 									</button>
 								</div>
-								{file && (noteSequence ? <></> : <p>Transcribing ...</p>)}
+								{file &&
+									(noteSequence ? (
+										<>
+											<PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
+											<StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
+										</>
+									) : (
+										<p>Transcribing ...</p>
+									))}
 							</div>
 							<div>
 								<h3

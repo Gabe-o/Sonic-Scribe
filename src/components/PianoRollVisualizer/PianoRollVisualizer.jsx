@@ -36,6 +36,7 @@ export default function PianoRollVisualizer({ noteSequence }) {
 			setPlayer(
 				new mm.Player(false, {
 					run: (note) => visualizer.redraw(note),
+					stop: () => {setPlaying(false)}
 				})
 			);
 		}

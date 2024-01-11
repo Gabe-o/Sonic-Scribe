@@ -30,6 +30,7 @@ export default function StaffVisualizer({ noteSequence }) {
             setPlayer(
 				new mm.Player(false, {
 					run: (note) => visualizer.redraw(note),
+					stop: () => {setPlaying(false)}
 				})
 			);
         }

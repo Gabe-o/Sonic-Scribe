@@ -4,6 +4,7 @@
     align-items: center;
     max-width: 90vw;
     height: fit-content;
+    position: relative;
 }
 
 .pianoRollVisualizer-button {
@@ -26,7 +27,6 @@
 
 .pianoRollVisualizer-canvas {
     width: 90%;
-    position: relative;
     overflow-x: auto;
     height: fit-content;
     background-color: rgb(20,20,20);
