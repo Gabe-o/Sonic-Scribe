@@ -26,3 +26,5 @@
     ```
     node index.js
     ```
+    Note for the backend to function properly you need to install musescore3 and add it you your system path variables.
+    Install: https://ftp.osuosl.org/pub/musescore-nightlies/windows/3x/stable/
