@@ -3,7 +3,7 @@ import { noteSequenceToMusicXML } from "../../noteSequenceToMusicXML";
 import { downloadFile } from "../../downloadHelper";
 import "./XmlDownloadButton.css";
 
-const XmlDownloadButton = (noteSequence) => {
+const XmlDownloadButton = ({noteSequence}) => {
     return (
         <button class="xmlDownloadButton-button" 
             onClick={async () => {

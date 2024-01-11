@@ -146,15 +146,7 @@ const TranscribePage = () => {
 										<img src={RightArrow} alt="right-arrow" style={rightArrowStyles}></img>
 									</button>
 								</div>
-								{file &&
-									(noteSequence ? (
-										<>
-											<PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
-											<StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
-										</>
-									) : (
-										<p>Transcribing ...</p>
-									))}
+								{file && (noteSequence ? <></> : <p>Transcribing ...</p>)}
 							</div>
 							<div>
 								<h3
