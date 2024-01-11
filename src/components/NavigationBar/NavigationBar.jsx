@@ -5,12 +5,38 @@ import Logo from '../../images/logo.png';
 // styles
 import "./NavigationBar.css";
 
-const Navbar = () => {
+const NavigationBar = () => {
     return (
-        <div>
-            Navigation bar
-        </div>
+        <nav id="navbar">
+            <div>
+                <h3>
+                    Sonic Scribe
+                </h3>
+            </div>
+            <div>
+                <ul>
+                    <li>
+                        <button>
+                            Home
+                        </button>
+                    </li>
+                    <li>
+                        <button>
+                            Transcriber
+                        </button>
+                    </li>
+                    <li>
+                        <button>
+                            Tutorial
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <i></i>
+            </div>
+        </nav >
     );
 }
 
-export default Navbar;
+export default NavigationBar;

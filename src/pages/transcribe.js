@@ -109,9 +109,9 @@ const TranscribePage = () => {
     return (
         <>
             <div className="relative h-screen">
+                <NavigationBar />
                 <img src={BG} className="absolute inset-0 object-cover w-full h-full z-0" />
                 <div className="absolute inset-0 z-10">
-                <NavigationBar />
                     {modelReady ? (
                         <div style={{ 
                             display: "flex",
