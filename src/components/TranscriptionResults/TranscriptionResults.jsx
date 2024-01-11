@@ -5,9 +5,10 @@ import StaffVisualizer from "../StaffVisualizer/StaffVisualizer";
 import XmlDownloadButton from "../XmlDownloadButton/XmlDownloadButton";
 import MidiDownloadButton from "../MidiDownloadButton/MidiDownloadButton";
 import "./TranscriptionResults.css";
+import TranscribePage from "../TranscribePage/TranscribePage";
 
 
-const TranscriptionResults = ({ noteSequence }) => { 
+const TranscriptionResults = ({ noteSequence }) => {
     const [pianoRoll, setPianoRoll] = useState(true);
     const [audioPlayback, setAudioPlayback] = useState(false);
 
@@ -15,20 +16,19 @@ const TranscriptionResults = ({ noteSequence }) => {
         <div class="transcriptionResults-bg">
             <h1 class="transcriptionResults-title">Your audio has been converted:</h1>
             <div class="transcriptionResults-preview">
-                { pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback}/> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback}/> }
+                {pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} /> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />}
             </div>
             <div class="transcriptionResults-buttonContainer">
-                <XmlDownloadButton noteSequence={noteSequence}/>
+                <XmlDownloadButton noteSequence={noteSequence} />
                 <button class="transcriptionResults-switchButton" disabled={audioPlayback}
-                onClick={() => {
-                    setPianoRoll(!pianoRoll);
-                }}
+                    onClick={() => {
+                        setPianoRoll(!pianoRoll);
+                    }}
                 >
                     Switch View
                 </button>
-                <MidiDownloadButton noteSequence={noteSequence}/>
+                <MidiDownloadButton noteSequence={noteSequence} />
             </div>
-            <button class="transcriptionResults-convertButton">Convert More</button>
         </div>
     );
 }
