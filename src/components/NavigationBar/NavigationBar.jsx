@@ -34,6 +34,11 @@ const NavigationBar = () => {
                             Resources
                         </Link>
                     </li>
+                    <li>
+                        <Link to='/default' className='navbar-link'>
+                            Tutorial
+                        </Link>
+                    </li>
                 </ul>
             </div>
             <div>

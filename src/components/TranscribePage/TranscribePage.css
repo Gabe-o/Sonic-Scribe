@@ -1,0 +1,58 @@
+.transcribe-main {
+  background-color: gray;
+  height: 100vh;
+  width: 100vw;
+}
+
+.transcribe-background-image {
+  /* background-image: url("../../images/headphone-bg.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  position: fixed; */
+  background-color: gray;
+}
+
+.transcribe-tutorial-container {
+  width: 150px;
+  height: 35px;
+  background-color: #2d2d2d;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 200;
+  border: 0.5px solid white;
+  margin-top: 5%;
+}
+
+.transcribe-tutorial-container img {
+  height: 0.7rem;
+  width: 0.7rem;
+  margin-left: 5px;
+}
+
+.transcriptionResults-switchButton {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  width: 160px;
+  height: 40px;
+  background-color: rgb(128, 255, 255);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 200;
+  margin-inline: 40px;
+  text-decoration: none;
+  color: black;
+}
