@@ -3,6 +3,9 @@ import { useEffect, useRef } from "react";
 import { quantizeNoteSequence } from "@magenta/music/esm/core/sequences";
 import * as mm from "@magenta/music";
 
+// styles
+import "./PianoRollVisualizer.css";
+
 export default function PianoRollVisualizer({ visualizerType, noteSequence }) {
     const visualizerRef = useRef(null);
     const [visualizer, setVisualizer] = useState(null);

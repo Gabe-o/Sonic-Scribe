@@ -1,6 +1,6 @@
 import * as React from "react";
-import PianoRollVisualizer from "../components/PianoRollVisualizer";
-import UploadButtonComponent from "../components/UploadButton";
+import PianoRollVisualizer from "../components/PianoRollVisualizer/PianoRollVisualizer";
+import UploadButtonComponent from "../components/UploadButton/UploadButton";
 
 const pageStyles = {
     color: "#232129",

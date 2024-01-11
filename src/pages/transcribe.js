@@ -1,16 +1,14 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import StaffVisualizer from "../components/StaffVisualizer";
-import PianoRollVisualizer from "../components/PianoRollVisualizer";
-import NavigationBar from "../components/NavigationBar"
+import StaffVisualizer from "../components/StaffVisualizer/StaffVisualizer";
+import PianoRollVisualizer from "../components/PianoRollVisualizer/PianoRollVisualizer";
+import NavigationBar from "../components/NavigationBar/NavigationBar"
 import BG from "../images/headphone-bg.png"
 import * as mm from "@magenta/music";
 import { noteSequenceToMusicXML } from "../noteSequenceToMusicXML";
-import UploadButtonComponent from "../components/UploadButton";
+import UploadButtonComponent from "../components/UploadButton/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../transcribe";
 import RightArrow from "../images/right-arrow.png";
-
-import Example from "../components/Example/Example";
 
 const TranscribePage = () => {
     const [modelReady, setModelReady] = useState(false);
@@ -136,10 +134,6 @@ const TranscribePage = () => {
                                      }}>
                                         Audio Transcriber
                                     </h1>
-
-
-                                    <Example />
-
                                     
                                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
                                     <button style={tutorialButtonStyles} onClick={() => handleTutorialButton()}>
