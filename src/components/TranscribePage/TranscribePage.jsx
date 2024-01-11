@@ -213,7 +213,7 @@ const TranscribePage = () => {
         </div>
         <div style={{ display: fileUploaded ? "block" : "none" }}>
           <TranscriptionResults noteSequence={noteSequence} />
-          <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
+          <button class="transcriptionResults-convertButton" style={{ margin: "50px" }} onClick={() => handleConvertMore()}>Convert More</button>
         </div>
       </div>
     </>
