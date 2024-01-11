@@ -54,7 +54,7 @@ export default function PianoRollVisualizer({ noteSequence }) {
 						setPlaying(true);
 					}}
 				>
-					<img src={PlaySVG} width={100} height={100} />
+					<img src={PlaySVG} alt="PLAY" width={100} height={100} />
 				</button> 
 				:
 				<button class="pianoRollVisualizer-button"
@@ -63,7 +63,7 @@ export default function PianoRollVisualizer({ noteSequence }) {
 						setPlaying(false);
 					}}
 				>
-					<img src={StopSVG} width={100} height={100} />
+					<img src={StopSVG} alt="STOP" width={100} height={100} />
 				</button>
 				}
 			</div>
