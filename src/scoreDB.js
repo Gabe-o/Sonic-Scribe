@@ -16,11 +16,11 @@ function openNoteSequenceDB() {
 	};
 
 	req.onerror = function (evt) {
-		console.error("openDb:", evt.target.errorCode);
+		console.error("openNoteSequenceDB:", evt.target.errorCode);
 	};
 
 	req.onupgradeneeded = function (evt) {
-		console.log("openDb.onupgradeneeded");
+		console.log("openNoteSequenceDB.onupgradeneeded");
 		var store = evt.currentTarget.result.createObjectStore(DB_STORE_NAME, { keyPath: "id", autoIncrement: true });
 	};
 }

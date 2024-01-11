@@ -6,7 +6,9 @@ const transcribe = () => {
 		<div>
 			<TranscribePage />
 		</div>
-	)
-}
+	);
+};
 
 export default transcribe;
+
+export const Head = () => <title>SonicScribe</title>;
