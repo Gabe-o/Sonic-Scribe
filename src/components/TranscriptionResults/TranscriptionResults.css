@@ -21,7 +21,7 @@
     margin-top: 20px;
 }
 
-/* .transcriptionResults-switchButton {
+.transcriptionResults-switchButton {
     background: none;
 	color: inherit;
 	border: none;
@@ -41,7 +41,7 @@
     margin-inline: 40px;
     text-decoration: none;
     color: black;
-} */
+}
 
 .transcriptionResults-switchButton:disabled {
     cursor: not-allowed;

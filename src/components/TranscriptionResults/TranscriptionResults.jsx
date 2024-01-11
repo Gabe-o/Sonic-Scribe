@@ -8,7 +8,7 @@ import "./TranscriptionResults.css";
 import TranscribePage from "../TranscribePage/TranscribePage";
 
 
-const TranscriptionResults = ({ noteSequence }) => {
+const TranscriptionResults = ({ noteSequence, handleConvertMore }) => {
     const [pianoRoll, setPianoRoll] = useState(true);
     const [audioPlayback, setAudioPlayback] = useState(false);
 
@@ -29,6 +29,7 @@ const TranscriptionResults = ({ noteSequence }) => {
                 </button>
                 <MidiDownloadButton noteSequence={noteSequence} />
             </div>
+            <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
         </div>
     );
 }
