@@ -110,31 +110,31 @@ const TranscribePage = () => {
         <>
             <div className="relative h-screen">
                 <NavigationBar />
-                <img src={BG} className="absolute inset-0 object-cover w-full h-full z-0" />
+                <img src={BG} className="transcribe-wallpaper" />
                 <div className="absolute inset-0 z-10">
                     {modelReady ? (
-                        <div style={{ 
+                        <div style={{
                             display: "flex",
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "space-between",
                             height: "calc(100vh - 100px)",
                             margin: "0 40px"
-                         }}>
+                        }}>
                             <div>
-                                <div style={{ 
-                                    display: "flex", 
-                                    flexDirection: "column", 
+                                <div style={{
+                                    display: "flex",
+                                    flexDirection: "column",
                                     alignItems: "center",
 
                                 }}>
-                                    <h1 style={{ 
+                                    <h1 style={{
                                         color: "white",
                                         fontSize: "3.5rem",
-                                     }}>
+                                    }}>
                                         Audio Transcriber
                                     </h1>
-                                    
+
                                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
                                     <button style={tutorialButtonStyles} onClick={() => handleTutorialButton()}>
                                         <p>Tutorial</p>
@@ -152,14 +152,14 @@ const TranscribePage = () => {
                                     ))}
                             </div>
                             <div>
-                                <h3 style={{ 
+                                <h3 style={{
                                     color: "white",
                                     fontWeight: "200",
                                     fontSize: "1.7rem"
-                                 }}>Previous Transcriptions</h3>
-                                 <div>
+                                }}>Previous Transcriptions</h3>
+                                <div>
 
-                                 </div>
+                                </div>
                             </div>
                         </div>
                     ) : (

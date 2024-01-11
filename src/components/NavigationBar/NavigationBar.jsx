@@ -2,33 +2,37 @@ import React from 'react';
 import { Link } from 'gatsby';
 import Logo from '../../images/logo.png';
 
+// components
+import TranscribePage from '../../pages/transcribe';
+import HomePage from '../../pages/default';
+import ResourcesPage from '../../pages/resources';
+
 // styles
 import "./NavigationBar.css";
 
 const NavigationBar = () => {
     return (
-        <nav id="navbar">
-            <div>
-                <h3>
-                    Sonic Scribe
-                </h3>
+        <nav id="navbar" >
+            <div className='navbar-sonic-scribe'>
+                <img src={Logo} alt="logo" />
+                <h3>SonicScribe</h3>
             </div>
             <div>
-                <ul>
+                <ul className='navbar-list'>
                     <li>
-                        <button>
+                        <Link to='/' className='navbar-link'>
                             Home
-                        </button>
+                        </Link>
                     </li>
                     <li>
-                        <button>
-                            Transcriber
-                        </button>
+                        <Link to='/transcribe' className='navbar-link'>
+                            Transcribe
+                        </Link>
                     </li>
                     <li>
-                        <button>
-                            Tutorial
-                        </button>
+                        <Link to='/resources' className='navbar-link'>
+                            Resources
+                        </Link>
                     </li>
                 </ul>
             </div>
