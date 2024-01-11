@@ -1,4 +1,5 @@
 import * as React from "react";
+import NavigationBar from "../components/NavigationBar/NavigationBar";
 
 const pageStyles = {
 	color: "#232129",
@@ -120,6 +121,7 @@ const links = [
 const DefaultPage = () => {
 	return (
 		<main style={pageStyles}>
+			<NavigationBar />
 			<h1 style={headingStyles}>
 				Congratulations
 				<br />

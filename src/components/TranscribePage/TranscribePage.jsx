@@ -162,7 +162,7 @@ const TranscribePage = () => {
                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
                     <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
                       <p>Tutorial</p>
-                      <img src={RightArrow} alt="right-arrow"></img>
+                      {/* <div></div> */}
                     </button>
                   </div>
                   {file &&

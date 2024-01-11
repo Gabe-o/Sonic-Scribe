@@ -26,13 +26,16 @@
   color: white;
   font-weight: 200;
   border: 0.5px solid white;
-  margin-top: 5%;
+  margin-top: 40px;
 }
 
-.transcribe-tutorial-container img {
+.transcribe-tutorial-container p {
+  margin: auto;
+}
+
+.transcribe-tutorial-container div {
   height: 0.7rem;
   width: 0.7rem;
-  margin-left: 5px;
 }
 
 .transcriptionResults-switchButton {
