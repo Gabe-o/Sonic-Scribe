@@ -3,7 +3,7 @@ import * as mm from "@magenta/music";
 import { downloadFile } from "../../downloadHelper";
 import "./MidiDownloadButton.css";
 
-const MidiDownloadButton = (noteSequence) => {
+const MidiDownloadButton = ({ noteSequence }) => {
     return (
         <button class="midiDownloadButton-button" 
             onClick={() => {
