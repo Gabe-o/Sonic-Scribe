@@ -10,6 +10,7 @@ import UploadButtonComponent from "../UploadButton/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../../transcribe";
 import RightArrow from "../../images/right-arrow.png";
 import TranscriptionResults from "../TranscriptionResults/TranscriptionResults";
+import PreviousTranscriptsMenu from "../PreviousTranscriptsMenu/PreviousTranscriptsMenu";
 
 import "./TranscribePage.css";
 
@@ -140,18 +141,8 @@ const TranscribePage = () => {
                     <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
                     <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
                       <p>Tutorial</p>
-                      {/* <div></div> */}
                     </button>
                   </div>
-                  {file &&
-                    (noteSequence ? (
-                      <>
-                        <PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
-                        <StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
-                      </>
-                    ) : (
-                      <p>Transcribing ...</p>
-                    ))}
                 </div>
                 <div>
                   <h3
@@ -163,34 +154,16 @@ const TranscribePage = () => {
                   >
                     Previous Transcriptions
                   </h3>
-                  <div></div>
+                  <PreviousTranscriptsMenu />
                 </div>
               </div>
             ) : (
               <p>Loading Model...</p>
             )}
           </div>
-
-          {/* <button
-            onClick={async () => {
-              const musicXML = await noteSequenceToMusicXML(noteSequence);
-              downloadFile(musicXML, "music.xml", "application/octet-stream");
-            }}
-          >
-            Download MusicXML
-          </button>
-
-          <button
-            onClick={() => {
-              const midiData = mm.sequenceProtoToMidi(noteSequence);
-              downloadFile(midiData, "music.midi", "application/octet-stream");
-            }}
-          >
-            Download MIDI
-          </button> */}
-        </div>
-        <div style={{ display: fileUploaded ? "block" : "none" }}>
-          <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore} />
+          <div style={{ display: fileUploaded ? "block" : "none" }}>
+            <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore} />
+          </div>
         </div>
       </div>
     </>
