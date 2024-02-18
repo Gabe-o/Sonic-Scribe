@@ -14,7 +14,6 @@ const TranscribePage = () => {
   const [modelReady, setModelReady] = useState(false);
   const [file, setFile] = useState(null);
   const [noteSequence, setNoteSequence] = useState(null);
-  const [fileUploaded, setFileUploaded] = useState(false);
 
   useEffect(() => {
     // loading onsets and frames
@@ -28,13 +27,6 @@ const TranscribePage = () => {
 
     init();
   }, []);
-
-  useEffect(() => {
-    if (noteSequence) {
-      setFileUploaded(true);
-      pushNoteSequence({ noteSequence: noteSequence, title: file.name.split(".")[0] });
-    }
-  }, [noteSequence]);
 
   useEffect(() => {
     // waiting for a file
@@ -59,7 +51,9 @@ const TranscribePage = () => {
         }
 
         const createNoteSequence = async () => {
-          setNoteSequence(mm.midiToSequenceProto(await createArray(file)));
+          let ns = mm.midiToSequenceProto(await createArray(file))
+          pushNoteSequence({ noteSequence: ns, title: file.name.split(".")[0] });
+          setNoteSequence(ns);
         };
 
         createNoteSequence();
@@ -68,6 +62,7 @@ const TranscribePage = () => {
         const transcribe = async () => {
           try {
             let output = await transcribeFromAudioFile(file);
+            pushNoteSequence({ noteSequence: output, title: file.name.split(".")[0] });
             setNoteSequence(output);
           } catch (error) {
             console.error("Error transcribing file:", error);
@@ -84,14 +79,16 @@ const TranscribePage = () => {
   };
 
   const handleConvertMore = () => {
-    window.location.reload();
+    window.location.reload(); // TODO: there should be a way to do this without reload the page but i couldn't figure it out
+    setNoteSequence(null);
+    setFile(null);
   }
 
   return (
     <>
       <div className="transcribe-main">
         <NavigationBar />
-        <div className="transcribe-container" style={{ display: fileUploaded ? "none" : "flex" }}>
+        <div className="transcribe-container" style={{ display: noteSequence ? "none" : "flex" }}>
           {modelReady ? (
             <div class="transcribe-container-transcriber">
               <h1
@@ -103,7 +100,7 @@ const TranscribePage = () => {
                 Audio Transcriber
               </h1>
 
-              <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
+              <UploadButtonComponent setFile={setFile} file={file}></UploadButtonComponent>
               <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
                 <p>Tutorial</p>
               </button>
@@ -131,10 +128,10 @@ const TranscribePage = () => {
             >
               Previous Transcriptions
             </h1>
-            {modelReady ? <PreviousTranscriptsMenu /> : ""}
+            {modelReady ? <PreviousTranscriptsMenu setNoteSequence={setNoteSequence} noteSequence={noteSequence}/> : ""}
           </div>
         </div>
-        <div style={{ display: fileUploaded ? "block" : "none" }}>
+        <div style={{ display: noteSequence ? "block" : "none" }}>
           <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore} />
         </div>
       </div>

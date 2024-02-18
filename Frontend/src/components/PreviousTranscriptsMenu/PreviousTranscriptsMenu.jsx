@@ -4,7 +4,7 @@ import "./PreviousTranscriptsMenu.css"
 import "./TranscriptionSelector.css"
 import { getCachedNoteSequences } from "../../scoreDB";
 
-export default function PreviousTranscriptsMenu() {
+export default function PreviousTranscriptsMenu({ setNoteSequence, noteSequence }) {
     const [transcripts, setTranscripts] = useState([]);
 
     useEffect(() => {
@@ -13,18 +13,22 @@ export default function PreviousTranscriptsMenu() {
         }
 
         getTranscripts();
-    }, []);
+    }, [noteSequence]);
 
     return (
         <div class="previousTranscriptsMenu-container">
-            {transcripts.map((t) => <TranscriptionSelector noteSequence={t?.noteSequence} title={t?.title} />)}
+            {transcripts.map((t) => <TranscriptionSelector noteSequence={t?.noteSequence} title={t?.title} setNoteSequence={setNoteSequence}/>)}
         </div>
     );
 }
 
-function TranscriptionSelector({ noteSequence, title }) {
+function TranscriptionSelector({ noteSequence, title, setNoteSequence }) {
+    const openTranscript = () => {
+        setNoteSequence(noteSequence);
+    };
+
     return (
-        <div class="transcriptionSelector-container">
+        <div class="transcriptionSelector-container" onClick={openTranscript}>
             <div class="transcriptionSelector-image">
 
             </div>
