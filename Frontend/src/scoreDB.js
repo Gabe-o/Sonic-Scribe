@@ -1,9 +1,9 @@
-var db;
+export var db;
 
 const DB_NAME = "NoteSequencesDB";
 const DB_VERSION = 1;
 const DB_STORE_NAME = "scores";
-const MAX_STORAGE = 20; // Maximum number of note sequences that can be stored
+const MAX_STORAGE = 12; // Maximum number of note sequences that can be stored
 
 openNoteSequenceDB();
 function openNoteSequenceDB() {
@@ -54,28 +54,41 @@ export function pushNoteSequence(noteSequence) {
 }
 
 export function getCachedNoteSequences() {
-	// Open a transaction to the database
-	var transaction = db.transaction([DB_STORE_NAME], "readonly");
+	return new Promise((resolve, reject) => {
+		try {
+			// Open a transaction to the database
+			var transaction = db.transaction([DB_STORE_NAME], "readonly");
 
-	// Get the object store from the transaction
-	var objstore = transaction.objectStore(DB_STORE_NAME);
+			// Get the object store from the transaction
+			var objstore = transaction.objectStore(DB_STORE_NAME);
 
-	// Create a cursor request to get all items in the store
-	var request = objstore.openCursor();
+			// Create a cursor request to get all items in the store
+			var request = objstore.openCursor();
 
-	// This array will hold all the note sequences
-	var noteSequences = [];
+			// This array will hold all the note sequences
+			var noteSequences = [];
 
-	request.onsuccess = function (event) {
-		var cursor = event.target.result;
-		if (cursor) {
-			// If the cursor isn't null, we got an IndexedDB row. Add it to the note sequence array
-			noteSequences.push(cursor.value);
-			// Ask for the next data item in the object store
-			cursor.continue();
-		} else {
-			// If we have a null cursor, it means we've got all the data in the store
-			console.log(noteSequences);
+			request.onsuccess = function (event) {
+				var cursor = event.target.result;
+				if (cursor) {
+					// If the cursor isn't null, we got an IndexedDB row. Add it to the note sequence array
+					noteSequences.push(cursor.value);
+					// Ask for the next data item in the object store
+					cursor.continue();
+				} else {
+					// If we have a null cursor, it means we've got all the data in the store
+					console.log(noteSequences);
+					resolve(noteSequences);
+				}
+			};
+
+			request.onerror = function (event) {
+				// Handle errors!
+				console.log("Database error: " + event.target.errorCode);
+				reject(event.target.errorCode);
+			};
+		} catch (err) {
+			openNoteSequenceDB();
 		}
-	};
+	});
 }

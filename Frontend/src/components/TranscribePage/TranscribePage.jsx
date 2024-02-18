@@ -1,15 +1,12 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import StaffVisualizer from "../StaffVisualizer/StaffVisualizer";
-import PianoRollVisualizer from "../PianoRollVisualizer/PianoRollVisualizer";
 import NavigationBar from "../NavigationBar/NavigationBar";
-import BG from "../../images/headphone-bg.png";
 import * as mm from "@magenta/music";
-import { noteSequenceToMusicXML } from "../../noteSequenceToMusicXML";
 import UploadButtonComponent from "../UploadButton/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../../transcribe";
-import RightArrow from "../../images/right-arrow.png";
 import TranscriptionResults from "../TranscriptionResults/TranscriptionResults";
+import PreviousTranscriptsMenu from "../PreviousTranscriptsMenu/PreviousTranscriptsMenu";
+import { pushNoteSequence } from "../../scoreDB";
 
 import "./TranscribePage.css";
 
@@ -17,8 +14,6 @@ const TranscribePage = () => {
   const [modelReady, setModelReady] = useState(false);
   const [file, setFile] = useState(null);
   const [noteSequence, setNoteSequence] = useState(null);
-
-  const [fileUploaded, setFileUploaded] = useState(false);
 
   useEffect(() => {
     // loading onsets and frames
@@ -32,12 +27,6 @@ const TranscribePage = () => {
 
     init();
   }, []);
-
-  useEffect(() => {
-    if (noteSequence) {
-      setFileUploaded(true);
-    }
-  }, [noteSequence]);
 
   useEffect(() => {
     // waiting for a file
@@ -62,7 +51,9 @@ const TranscribePage = () => {
         }
 
         const createNoteSequence = async () => {
-          setNoteSequence(mm.midiToSequenceProto(await createArray(file)));
+          let ns = mm.midiToSequenceProto(await createArray(file))
+          pushNoteSequence({ noteSequence: ns, title: file.name.split(".")[0] });
+          setNoteSequence(ns);
         };
 
         createNoteSequence();
@@ -71,6 +62,7 @@ const TranscribePage = () => {
         const transcribe = async () => {
           try {
             let output = await transcribeFromAudioFile(file);
+            pushNoteSequence({ noteSequence: output, title: file.name.split(".")[0] });
             setNoteSequence(output);
           } catch (error) {
             console.error("Error transcribing file:", error);
@@ -82,114 +74,64 @@ const TranscribePage = () => {
     }
   }, [file, modelReady]);
 
-  // Creates a blob and serves it to the user
-  function downloadFile(data, filename, type) {
-    const blob = new Blob([data], { type });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
   const handleTutorialButton = () => {
 
   };
 
   const handleConvertMore = () => {
-    window.location.reload();
+    window.location.reload(); // TODO: there should be a way to do this without reload the page but i couldn't figure it out
+    setNoteSequence(null);
+    setFile(null);
   }
 
   return (
     <>
       <div className="transcribe-main">
-        <div className="transcribe-background-image" />
-        <div className="transcribe-container">
-          <NavigationBar />
-          <div style={{ display: fileUploaded ? "none" : "block" }}>
-            {modelReady ? (
-              <div
+        <NavigationBar />
+        <div className="transcribe-container" style={{ display: noteSequence ? "none" : "flex" }}>
+          {modelReady ? (
+            <div class="transcribe-container-transcriber">
+              <h1
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  height: "calc(100vh - 100px)",
-                  margin: "0 40px",
+                  color: "white",
+                  fontSize: "3.5rem",
                 }}
               >
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <h1
-                      style={{
-                        color: "white",
-                        fontSize: "3.5rem",
-                      }}
-                    >
-                      Audio Transcriber
-                    </h1>
+                Audio Transcriber
+              </h1>
 
-                    <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
-                    <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
-                      <p>Tutorial</p>
-                      {/* <div></div> */}
-                    </button>
-                  </div>
-                  {file &&
-                    (noteSequence ? (
-                      <>
-                        <PianoRollVisualizer noteSequence={noteSequence}></PianoRollVisualizer>
-                        <StaffVisualizer noteSequence={noteSequence}></StaffVisualizer>
-                      </>
-                    ) : (
-                      <p>Transcribing ...</p>
-                    ))}
-                </div>
-                <div>
-                  <h3
-                    style={{
-                      color: "white",
-                      fontWeight: "200",
-                      fontSize: "1.7rem",
-                    }}
-                  >
-                    Previous Transcriptions
-                  </h3>
-                  <div></div>
-                </div>
-              </div>
-            ) : (
-              <p>Loading Model...</p>
-            )}
+              <UploadButtonComponent setFile={setFile} file={file}></UploadButtonComponent>
+              <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
+                <p>Tutorial</p>
+              </button>
+            </div>
+          ) : (
+            <div class="transcribe-container-transcriber">
+              <h1
+                style={{
+                  color: "white",
+                  fontSize: "3.5rem",
+                }}
+              >
+                Loading Model...
+              </h1>
+            </div>
+          )}
+          <div class="transcribe-container-transcriptions">
+            <h1
+              style={{
+                color: "white",
+                fontSize: "1.5rem",
+                fontWeight: "1",
+                marginTop: "10%"
+              }}
+            >
+              Previous Transcriptions
+            </h1>
+            {modelReady ? <PreviousTranscriptsMenu setNoteSequence={setNoteSequence} noteSequence={noteSequence}/> : ""}
           </div>
-
-          {/* <button
-            onClick={async () => {
-              const musicXML = await noteSequenceToMusicXML(noteSequence);
-              downloadFile(musicXML, "music.xml", "application/octet-stream");
-            }}
-          >
-            Download MusicXML
-          </button>
-
-          <button
-            onClick={() => {
-              const midiData = mm.sequenceProtoToMidi(noteSequence);
-              downloadFile(midiData, "music.midi", "application/octet-stream");
-            }}
-          >
-            Download MIDI
-          </button> */}
         </div>
-        <div style={{ display: fileUploaded ? "block" : "none" }}>
+        <div style={{ display: noteSequence ? "block" : "none" }}>
           <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore} />
         </div>
       </div>
