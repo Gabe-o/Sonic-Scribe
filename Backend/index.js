@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 const connection = mysql.createConnection({
 	host: 'db-4450.cluster-c9q6eyiik9it.us-east-2.rds.amazonaws.com',
 	user: 'admin',
-	password: 'ffeh3773?#?*#J1jno4ir',
+	password: 'ghp_dN2elKwmhWb2XVDoJ&&%^Dhd',
 	database: "db",
 	port: 3306,
 });
