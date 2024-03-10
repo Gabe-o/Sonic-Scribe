@@ -45,30 +45,31 @@ const styles = {
 const IndexPage = () => {
 	return (
 		<div>
-			<NavigationBar />
 			<div className="cComponent" style={styles.background}>
-				<Container>
-					<div class="info">
-						<div style={styles.container}>
-							<header style={styles.header}>Welcome to Sonic Scribe</header>
+			<NavigationBar />
+			
+			<Container>
+				<div class="info">
+					<div style={styles.container}>
+						<header style={styles.header}>Welcome to Sonic Scribe</header>
 
-							<body>
-								<div className="position-absolute top-80 start-0 translate middle">
-									<p style={styles.p1}>
-										Experience the seamless transformation of your favorite tunes into written notes with our innovative audio-to-sheet music converter.
-									</p>
-									<p style={styles.p1}>
-										Our platform allows you to effortlessly convert audio tracks, melodies, or compositions into accurate and readable sheet music.
-									</p>
-									<p style={styles.p2}>
-										Simply upload your audio file, and watch as our advanced technology transcribes the music into sheet notation, providing musicians and
-										composers with a new way to capture, preserve, and explore melodies.
-									</p>
-								</div>
-							</body>
-						</div>
+						<body>
+							<div className="position-absolute top-80 start-0 translate middle">
+								<p style={styles.p1}>
+									Experience the seamless transformation of your favorite tunes into written notes with our innovative audio-to-sheet music converter.
+								</p>
+								<p style={styles.p1}>
+									Our platform allows you to effortlessly convert audio tracks, melodies, or compositions into accurate and readable sheet music.
+								</p>
+								<p style={styles.p2}>
+									Simply upload your audio file, and watch as our advanced technology transcribes the music into sheet notation, providing musicians and
+									composers with a new way to capture, preserve, and explore melodies.
+								</p>
+							</div>
+						</body>
 					</div>
-				</Container>
+				</div>
+			</Container>
 			</div>
 		</div>
 	);
