@@ -1,24 +1,29 @@
-import React from 'react';
-import { Link } from 'gatsby';
+import React, { useContext, useEffect } from 'react';
+import { Link, navigate } from 'gatsby';
 import Logo from '../../images/logo.png';
-
-// components
-import TranscribePage from '../../pages/transcribe';
-import HomePage from '../../pages/default';
-import ResourcesPage from '../../pages/resources';
+import { logout } from '../../services/auth';
+import { UserContext } from '../../contexts/user';
 
 // styles
 import "./NavigationBar.css";
 
+const handleLogoutEvent = () => {
+    logout();
+    navigate('/');
+}
+
 const NavigationBar = () => {
+    const { user } = useContext(UserContext);
+    useEffect(() => {}, [user]);
+
     return (
         <nav id="navbar" >
             <div className='navbar-sonic-scribe'>
                 <img src={Logo} alt="logo" />
                 <h3>SonicScribe</h3>
             </div>
-            <div>
-                <ul className='navbar-list'>
+            <ul className='navbar-list'>
+                <div className='navbar-options'>
                     <li>
                         <Link to='/' className='navbar-link'>
                             Home
@@ -35,15 +40,31 @@ const NavigationBar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to='/default' className='navbar-link'>
+                        <Link to={user ? '/default' : '/login'} className='navbar-link'>
                             Tutorial
                         </Link>
                     </li>
-                </ul>
-            </div>
-            <div>
-                <i></i>
-            </div>
+                </div>
+                <li>
+                    {
+                        !user ? 
+                        (
+                            <Link to='/login' className='navbar-link'>
+                                Login
+                            </Link>
+                        ) : (
+                            <div style={{textAlign: 'center'}}>
+                                <div className='navbar-user'>
+                                    {user.email.split('@')[0]}
+                                </div>
+                                <div onClick={handleLogoutEvent} className='navbar-link'>
+                                    Logout
+                                </div>
+                            </div>
+                        )
+                    }
+                </li>
+            </ul>
         </nav >
     );
 }

@@ -8,21 +8,26 @@ const MAX_STORAGE = 12; // Maximum number of note sequences that can be stored
 openNoteSequenceDB();
 function openNoteSequenceDB() {
 	console.log("openNoteSequenceDB ...");
-	var req = indexedDB.open(DB_NAME, DB_VERSION);
+	if (typeof indexedDB !== 'undefined') {
+		// Use indexedDB
+		var req = indexedDB.open(DB_NAME, DB_VERSION);
 
-	req.onsuccess = function (evt) {
-		db = this.result;
-		console.log("openNoteSequenceDB DONE");
-	};
+		req.onsuccess = function (evt) {
+			db = this.result;
+			console.log("openNoteSequenceDB DONE");
+		};
 
-	req.onerror = function (evt) {
-		console.error("openNoteSequenceDB:", evt.target.errorCode);
-	};
+		req.onerror = function (evt) {
+			console.error("openNoteSequenceDB:", evt.target.errorCode);
+		};
 
-	req.onupgradeneeded = function (evt) {
-		console.log("openNoteSequenceDB.onupgradeneeded");
-		var store = evt.currentTarget.result.createObjectStore(DB_STORE_NAME, { keyPath: "id", autoIncrement: true });
-	};
+		req.onupgradeneeded = function (evt) {
+			console.log("openNoteSequenceDB.onupgradeneeded");
+			var store = evt.currentTarget.result.createObjectStore(DB_STORE_NAME, { keyPath: "id", autoIncrement: true });
+		};
+	  } else {
+		// Provide a fallback or do nothing
+	  }
 }
 
 export function pushNoteSequence(noteSequence) {
