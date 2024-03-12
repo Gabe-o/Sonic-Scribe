@@ -44,6 +44,11 @@ const NavigationBar = () => {
                             Tutorial
                         </Link>
                     </li>
+                    <li>
+                        <Link to={user ? '/default' : '/search'} className='navbar-link'>
+                            Search
+                        </Link>
+                    </li>
                 </div>
                 <li>
                     {

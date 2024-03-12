@@ -100,6 +100,19 @@ app.get('/music', (req, res) => {
 	});
 });
 
+// Retrieve searched for music record
+app.get('/search', (req, res) => {
+	const searchTerm = req.query.q;
+	const query = `SELECT * FROM music WHERE title LIKE '%${searchTerm}%'`;
+  
+	db.query(query, (err, results) => {
+	  if (err) {
+		throw err;
+	  }
+	  res.json(results);
+	});
+  });
+
 
 /*
 Update a music record
