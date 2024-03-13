@@ -101,13 +101,14 @@ app.get('/music', (req, res) => {
 });
 
 // Retrieve searched for music record
-app.get('/search', (req, res) => {
-	const searchTerm = req.query.q;
+app.get('/music', (req, res) => {
 	const query = `SELECT * FROM music WHERE title LIKE '%${searchTerm}%'`;
   
-	db.query(query, (err, results) => {
+	connection.query(query, (err, results) => {
 	  if (err) {
-		throw err;
+		console.error('Error retrieving searched for music record: ' + err);
+			res.status(500).send('Error retrieving music record');
+			return;
 	  }
 	  res.json(results);
 	});

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import NavigationBar from "../NavigationBar/NavigationBar";
 import axios from 'axios';
 
@@ -8,29 +8,40 @@ const SearchPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
-    const handleSearch = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3306/search?q=${searchTerm}`);
-            setSearchResults(response.data);
-        } 
-        
-        catch (error) {
-            console.error('Error searching:', error);
+   
+
+    useEffect( () => {
+        const handleSearch = async () => {
+                axios.get(`http://localhost:10000/music`)
+                .then(res => setSearchResults(res.data))
+                .catch(error => console.log(error));  
         }
-    };
+        handleSearch();
+    }, []);
 
     return (
         <div>
             <NavigationBar />
-            <h1>Search</h1>
+            <form>
+                <h1>Search</h1>
                 <input type="text" placeholder="Search for music..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                <button onClick={handleSearch}>Search</button>
-
+            </form>
+            
             <h2>Search Results</h2>
                 <ul>
-                    {searchResults.map((user) => (
-                        <li key={user.id}>{user.name}</li>
-                    ))}
+                    {searchResults.filter((item) => {
+                        if(searchTerm === ""){
+                            return item
+                        }
+                        else if(item.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())){
+                            return item
+                        }
+                    })
+                    .map((item) => {
+                        return <li key={item.id}>{item.title}</li>
+                    }
+                        
+                    )}
                 </ul>
         </div>
     );
