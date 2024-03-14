@@ -15,6 +15,7 @@ const styles = {
 		backgroundSize: "cover",
 		backgroundRepeat: "no-repeat",
 		backgroundAttachment: "fixed",
+		backgroundPosition: "relative",
 		width: "100vw",
 		height: "100vh",
 	},
@@ -23,6 +24,7 @@ const styles = {
 const IndexPage = () => {
 	return (
 		<div>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 			<div className="cComponent" style={styles.background}>
 				<NavigationBar />
 				
