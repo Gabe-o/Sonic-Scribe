@@ -59,9 +59,9 @@ const NavigationBar = () => {
                             </Link>
                         ) : (
                             <div style={{textAlign: 'center'}}>
-                                <div className='navbar-user'>
+                                <Link to='/account' className='navbar-user'>
                                     {user.email.split('@')[0]}
-                                </div>
+                                </Link>
                                 <div onClick={handleLogoutEvent} className='navbar-link'>
                                     Logout
                                 </div>

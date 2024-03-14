@@ -19,7 +19,9 @@
 
 :root {
   --primary-color: #2d2d2d;
+  --primary-color-2: #464646;
   --secondary-color: #cbb593;
+  --secondary-color-2: #c4a378;
   --accent-color: #ffffff;
 }
 
