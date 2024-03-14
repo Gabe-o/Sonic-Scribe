@@ -2,8 +2,11 @@ import * as React from "react";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BG from "../images/headphone-bg.png";
+import sheet1 from "../images/score_0.png";
+import sheet2 from "../images/score_01.png";
+import '../styles/index.css'
 
-import { Container } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 const styles = {
 	background: {
@@ -11,34 +14,9 @@ const styles = {
 		backgroundPosition: "center",
 		backgroundSize: "cover",
 		backgroundRepeat: "no-repeat",
+		backgroundAttachment: "fixed",
 		width: "100vw",
 		height: "100vh",
-	},
-	container: {
-		fontFamily: "Arial, sans-serif",
-		lineHeight: "4",
-		padding: "20px",
-		maxWidth: "800px",
-		margin: "0 auto",
-	},
-	header: {
-		fontFamily: "Brush Script MT, cursive",
-		color: "white",
-		fontSize: "80px",
-		headerTitleAlign: "left",
-	},
-
-	p1: {
-		fontFamily: "Arial, sans-serif",
-		color: "white",
-		fontSize: "20px",
-		margin: "10px",
-	},
-	p2: {
-		fontFamily: "Arial, sans-serif",
-		color: "white",
-		fontSize: "16px",
-		margin: "10px",
 	},
 };
 
@@ -46,30 +24,46 @@ const IndexPage = () => {
 	return (
 		<div>
 			<div className="cComponent" style={styles.background}>
-			<NavigationBar />
-			
-			<Container>
-				<div class="info">
-					<div style={styles.container}>
-						<header style={styles.header}>Welcome to Sonic Scribe</header>
-
-						<body>
-							<div className="position-absolute top-80 start-0 translate middle">
-								<p style={styles.p1}>
+				<NavigationBar />
+				
+				<Container>
+					<div class="info">
+						<Row>
+							<Col className="header">Welcome to Sonic Scribe</Col>
+						</Row>
+						<Row>
+							<Col>
+								<p class="p1">
 									Experience the seamless transformation of your favorite tunes into written notes with our innovative audio-to-sheet music converter.
 								</p>
-								<p style={styles.p1}>
+								<p class="p1">
 									Our platform allows you to effortlessly convert audio tracks, melodies, or compositions into accurate and readable sheet music.
 								</p>
-								<p style={styles.p2}>
-									Simply upload your audio file, and watch as our advanced technology transcribes the music into sheet notation, providing musicians and
-									composers with a new way to capture, preserve, and explore melodies.
-								</p>
-							</div>
-						</body>
+							</Col>
+							<Col>
+									<div id="slideshow">
+										<div class="slide-wrapper">	
+											
+											<div class="slide">
+												<Image class="slide-number" src={sheet1}  width="400" height="510"/>
+											</div>
+											<div class="slide">
+												<Image class="slide-number" src={sheet2} width="400" height="510"/>
+											</div>
+										</div>
+									</div>
+							</Col>
+						</Row>
+							<Row>	
+								<Col>
+									<p className="p2">
+										Simply upload your audio file, and watch as our advanced technology transcribes the music into sheet notation, providing musicians and
+										composers with a new way to capture, preserve, and explore melodies.
+									</p>
+								</Col>						
+							</Row>
 					</div>
-				</div>
-			</Container>
+				</Container>
 			</div>
 		</div>
 	);
