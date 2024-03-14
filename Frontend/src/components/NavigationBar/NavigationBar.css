@@ -48,6 +48,12 @@ nav {
   padding: 0px 0px;
 }
 
+.navbar-user:hover,
+.navbar-user.active {
+  color: var(--secondary-color);
+  cursor: pointer;
+}
+
 .navbar-link {
   text-decoration: none;
   color: var(--accent-color);
