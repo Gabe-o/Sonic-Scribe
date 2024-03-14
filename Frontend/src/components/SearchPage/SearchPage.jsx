@@ -3,13 +3,13 @@ import { useState, useEffect} from "react";
 import NavigationBar from "../NavigationBar/NavigationBar";
 import axios from 'axios';
 
+import "./SearchPage.css";
 
 const SearchPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
    
-
     useEffect( () => {
         const handleSearch = async () => {
                 axios.get(`http://localhost:10000/music`)
@@ -24,7 +24,9 @@ const SearchPage = () => {
             <NavigationBar />
             <form>
                 <h1>Search</h1>
-                <input type="text" placeholder="Search for music..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                <div class="d-flex form-inputs">
+                    <input className="form-control" type="text" placeholder="Search for music..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                </div>
             </form>
             
             <h2>Search Results</h2>
