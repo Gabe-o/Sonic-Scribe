@@ -1,37 +1,44 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import PianoRollVisualizer from "../PianoRollVisualizer/PianoRollVisualizer";
-import StaffVisualizer from "../StaffVisualizer/StaffVisualizer";
+import SheetMusic from '../../SheetMusic/SheetMusic.jsx'
 import XmlDownloadButton from "../XmlDownloadButton/XmlDownloadButton";
 import MidiDownloadButton from "../MidiDownloadButton/MidiDownloadButton";
 import "./TranscriptionResults.css";
-import TranscribePage from "../TranscribePage/TranscribePage";
-
 
 const TranscriptionResults = ({ noteSequence, handleConvertMore }) => {
-    const [pianoRoll, setPianoRoll] = useState(true);
+    const [visualizationMode, setVisualizationMode] = useState("pianoRoll");
     const [audioPlayback, setAudioPlayback] = useState(false);
 
+    const switchVisualizationMode = () => {
+        setVisualizationMode(visualizationMode === "pianoRoll" ? "sheetMusic" : "pianoRoll");
+    };
+
     return (
-        <div class="transcriptionResults-bg">
-            <h1 class="transcriptionResults-title">Your audio has been converted:</h1>
-            <div class="transcriptionResults-preview">
-                {pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} /> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />}
+        <div className="transcriptionResults-bg">
+            <h1 className="transcriptionResults-title">Your audio has been converted:</h1>
+            <div className="transcriptionResults-preview">
+                {visualizationMode === "pianoRoll" ? (
+                    <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />
+                ) : (
+                    <SheetMusic noteSequence={noteSequence} />
+                )}
             </div>
-            <div class="transcriptionResults-buttonContainer">
+            <div className="transcriptionResults-buttonContainer">
                 <XmlDownloadButton noteSequence={noteSequence} />
-                <button class="transcriptionResults-switchButton" disabled={audioPlayback}
-                    onClick={() => {
-                        setPianoRoll(!pianoRoll);
-                    }}
+                <button
+                    className="transcriptionResults-switchButton"
+                    disabled={audioPlayback}
+                    onClick={switchVisualizationMode}
                 >
                     Switch View
                 </button>
                 <MidiDownloadButton noteSequence={noteSequence} />
             </div>
-            <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
+            <button className="transcriptionResults-convertButton" onClick={handleConvertMore}>
+                Convert More
+            </button>
         </div>
     );
-}
+};
 
 export default TranscriptionResults;
