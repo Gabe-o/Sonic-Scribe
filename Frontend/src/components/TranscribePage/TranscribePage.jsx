@@ -100,7 +100,7 @@ const TranscribePage = () => {
                 Audio Transcriber
               </h1>
 
-              <UploadButtonComponent setFile={setFile} file={file}></UploadButtonComponent>
+              <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
               <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
                 <p>Tutorial</p>
               </button>
