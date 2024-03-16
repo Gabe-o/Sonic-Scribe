@@ -17,14 +17,16 @@
 
 ## Quick start
 
-    Run the following in the Frontend folder
-    ```
-    npm run develop
-    ```
+    Run the following commands in the Frontend folder
 
-    Run the following in the Backend folder
-    ```
-    node index.js
-    ```
+    - npm install
+    - npm run develop
+
+    Run the following command in the Backend folder
+
+    - npm install
+    - node index.js
+    
     Note for the backend to function properly you need to install musescore3 and add it you your system path variables.
-    Install: https://ftp.osuosl.org/pub/musescore-nightlies/windows/3x/stable/
+
+    Install: https://ftp.osuosl.org/pub/musescore-nightlies/
