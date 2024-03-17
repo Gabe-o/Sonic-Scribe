@@ -1,15 +1,8 @@
-.transcribe-main {
-  background-color: gray;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
-
 .transcribe-container {
+  background-color: gray;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
-  margin-top: 90px;
-  height: 100vh;
 }
 
 .transcribe-container-transcriber {
@@ -22,9 +15,21 @@
   height: 100%;
 }
 
+.transcribe-container-transcriber h1 {
+  color: white;
+  font-size: 3.5rem;
+}
+
 .transcribe-container-transcriptions {
   width: 50%;
   height: 100%;
+}
+
+.transcribe-container-transcriptions h1 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 1;
+  margin-top: 10%;
 }
 
 .transcribe-tutorial-container {

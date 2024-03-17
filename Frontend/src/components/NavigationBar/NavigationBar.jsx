@@ -35,18 +35,13 @@ const NavigationBar = () => {
                         </Link>
                     </li>
                     <li>
+                        <Link to='/search' className='navbar-link'>
+                            Search
+                        </Link>
+                    </li>
+                    <li>
                         <Link to='/resources' className='navbar-link'>
                             Resources
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={user ? '/default' : '/login'} className='navbar-link'>
-                            Tutorial
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={user ? '/default' : '/search'} className='navbar-link'>
-                            Search
                         </Link>
                     </li>
                 </div>
