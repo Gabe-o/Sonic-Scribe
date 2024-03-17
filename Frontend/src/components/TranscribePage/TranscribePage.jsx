@@ -4,16 +4,15 @@ import NavigationBar from "../NavigationBar/NavigationBar";
 import * as mm from "@magenta/music";
 import UploadButtonComponent from "../UploadButton/UploadButton";
 import { initOnsetsAndFrames, transcribeFromAudioFile } from "../../transcribe";
-import TranscriptionResults from "../TranscriptionResults/TranscriptionResults";
 import PreviousTranscriptsMenu from "../PreviousTranscriptsMenu/PreviousTranscriptsMenu";
 import { pushNoteSequence } from "../../scoreDB";
+import { navigate } from "gatsby";
 
 import "./TranscribePage.css";
 
 const TranscribePage = () => {
   const [modelReady, setModelReady] = useState(false);
   const [file, setFile] = useState(null);
-  const [noteSequence, setNoteSequence] = useState(null);
 
   useEffect(() => {
     // loading onsets and frames
@@ -53,7 +52,7 @@ const TranscribePage = () => {
         const createNoteSequence = async () => {
           let ns = mm.midiToSequenceProto(await createArray(file))
           pushNoteSequence({ noteSequence: ns, title: file.name.split(".")[0] });
-          setNoteSequence(ns);
+          navigate("/results", { state: { noteSequence: ns } });
         };
 
         createNoteSequence();
@@ -63,7 +62,7 @@ const TranscribePage = () => {
           try {
             let output = await transcribeFromAudioFile(file);
             pushNoteSequence({ noteSequence: output, title: file.name.split(".")[0] });
-            setNoteSequence(output);
+            navigate("/results", { state: { noteSequence: output } });
           } catch (error) {
             console.error("Error transcribing file:", error);
           }
@@ -78,61 +77,26 @@ const TranscribePage = () => {
 
   };
 
-  const handleConvertMore = () => {
-    window.location.reload(); // TODO: there should be a way to do this without reload the page but i couldn't figure it out
-    setNoteSequence(null);
-    setFile(null);
-  }
-
   return (
     <>
-      <div className="transcribe-main">
-        <NavigationBar />
-        <div className="transcribe-container" style={{ display: noteSequence ? "none" : "flex" }}>
-          {modelReady ? (
-            <div class="transcribe-container-transcriber">
-              <h1
-                style={{
-                  color: "white",
-                  fontSize: "3.5rem",
-                }}
-              >
-                Audio Transcriber
-              </h1>
-
-              <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
-              <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
-                <p>Tutorial</p>
-              </button>
-            </div>
-          ) : (
-            <div class="transcribe-container-transcriber">
-              <h1
-                style={{
-                  color: "white",
-                  fontSize: "3.5rem",
-                }}
-              >
-                Loading Model...
-              </h1>
-            </div>
-          )}
-          <div class="transcribe-container-transcriptions">
-            <h1
-              style={{
-                color: "white",
-                fontSize: "1.5rem",
-                fontWeight: "1",
-                marginTop: "10%"
-              }}
-            >
-              Previous Transcriptions
-            </h1>
-            {modelReady ? <PreviousTranscriptsMenu setNoteSequence={setNoteSequence} noteSequence={noteSequence}/> : ""}
+      <NavigationBar />
+      <div className="transcribe-container">
+        {modelReady ? (
+          <div class="transcribe-container-transcriber">
+            <h1>Audio Transcriber</h1>
+            <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
+            <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
+              <p>Tutorial</p>
+            </button>
           </div>
-        </div>
-        <div style={{ display: noteSequence ? "block" : "none" }}>
-          <TranscriptionResults noteSequence={noteSequence} handleConvertMore={handleConvertMore} />
+        ) : (
+          <div class="transcribe-container-transcriber">
+            <h1>Loading Model...</h1>
+          </div>
+        )}
+        <div class="transcribe-container-transcriptions">
+          <h1>Previous Transcriptions</h1>
+          {modelReady ? <PreviousTranscriptsMenu /> : ""}
         </div>
       </div>
     </>
