@@ -58,9 +58,7 @@ async function remoteNoteSequenceToMusicXML(noteSequence) {
 	const midi = mm.sequenceProtoToMidi(noteSequence);
 	const midiFile = new Blob([midi], { type: "audio/midi" });
 
-	let apiEndpoint = "localhost:10000";
-
-	const response = await fetch(`http://${apiEndpoint}/convert`, {
+	const response = await fetch(`${process.env.BACKEND_API_ENDPOINT}/convert`, {
 		method: "POST",
 		body: midiFile,
 		headers: {

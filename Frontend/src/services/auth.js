@@ -27,6 +27,7 @@ export const handleLogin = async ({ email, password }) => {
 		return true;
 	} catch (error) {
 		console.error(error);
+		alert(error.message);
 		return false;
 	}
 };
