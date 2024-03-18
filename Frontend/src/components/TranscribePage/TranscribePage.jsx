@@ -82,7 +82,7 @@ const TranscribePage = () => {
       <NavigationBar />
       <div className="transcribe-container">
         {modelReady ? (
-          <div class="transcribe-container-transcriber">
+          <div className="transcribe-container-transcriber">
             <h1>Audio Transcriber</h1>
             <UploadButtonComponent onFileUpload={setFile}></UploadButtonComponent>
             <button className="transcribe-tutorial-container" onClick={() => handleTutorialButton()}>
@@ -90,11 +90,11 @@ const TranscribePage = () => {
             </button>
           </div>
         ) : (
-          <div class="transcribe-container-transcriber">
+          <div className="transcribe-container-transcriber">
             <h1>Loading Model...</h1>
           </div>
         )}
-        <div class="transcribe-container-transcriptions">
+        <div className="transcribe-container-transcriptions">
           <h1>Previous Transcriptions</h1>
           {modelReady ? <PreviousTranscriptsMenu /> : ""}
         </div>

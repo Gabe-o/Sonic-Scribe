@@ -18,8 +18,8 @@ export default function PreviousTranscriptsMenu() {
     }, []);
 
     return (
-        <div class="previousTranscriptsMenu-container">
-            {transcripts.map((t) => <TranscriptionSelector noteSequence={t?.noteSequence} title={t?.title} />)}
+        <div className="previousTranscriptsMenu-container">
+            {transcripts.map((t, i) => <TranscriptionSelector key={i} noteSequence={t?.noteSequence} title={t?.title} />)}
         </div>
     );
 }
@@ -30,11 +30,11 @@ function TranscriptionSelector({ noteSequence, title,}) {
     };
 
     return (
-        <div class="transcriptionSelector-container" onClick={openTranscript}>
-            <div class="transcriptionSelector-image">
+        <div className="transcriptionSelector-container" onClick={openTranscript}>
+            <div className="transcriptionSelector-image">
 
             </div>
-            <p class="transcriptionSelector-title">{title}</p>
+            <p className="transcriptionSelector-title">{title}</p>
         </div>
     );
 }

@@ -11,8 +11,9 @@ function LoginPage() {
 
 	const handleLoginEvent = (event) => {
 		event.preventDefault();
-		handleLogin({ email: email, password: password });
-		navigate('/');
+		handleLogin({ email: email, password: password }).then((success) => {
+			if(success) navigate('/');
+		});
 	};
 
 	return (
