@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../contexts/user';
 
+// styles
+import './AccountSongs.css';
+
 const AccountSongs = ({ refresh }) => {
     const [songs, setSongs] = useState([]);
     const { user } = useContext(UserContext);
@@ -16,16 +19,16 @@ const AccountSongs = ({ refresh }) => {
       }
   }, [user]); // Re-fetch when user changes
 
-    return (
-        <div>
-            <h2>My Songs</h2>
-            <ul>
-                {songs.map((song, index) => (
-                    <li key={index}>{song.title}</li>
-                ))}
-            </ul>
-        </div>
-    );
+  return (
+    <div>
+        <h2>My Songs</h2>
+        <ul className="song-list">
+            {songs.map((song, index) => (
+                <li key={index} className="song-list-item">{song.title}</li>
+            ))}
+        </ul>
+    </div>
+);
 };
 
 export default AccountSongs;
