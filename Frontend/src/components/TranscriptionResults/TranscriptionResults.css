@@ -64,6 +64,30 @@
     font-size: 1rem;
     font-weight: 200;
     margin-top: 20px;
+    margin-inline: 40px;
     text-decoration: none;
     color: white;
+}
+
+.transcriptionResults-playAlongButton {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    width: 160px;
+    height: 40px;
+    background-color: #ccab79;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 200;
+    margin-top: 20px;
+    margin-inline: 40px;
+    text-decoration: none;
+    color: black;
 }

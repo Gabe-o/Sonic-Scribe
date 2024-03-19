@@ -6,35 +6,25 @@ import { Toast } from "primereact/toast";
 // styles
 import "./UploadButton.css";
 
-const UploadButtonComponent = ({ onFileUpload }) => {
+const UploadButtonComponent = ({ setFile }) => {
     const toast = useRef(null);
     let file = undefined;
     const [selectedFile, setSelectedFile] = useState();
-
-    // const saveFileLocally = (file) => {
-    //     return new Promise((resolve, reject) => {
-    //         const reader = new FileReader();
-
-    //         reader.onload = (event) => {
-    //             const result = reader.result;
-    //             const blob = new Blob([result], { type: file.type });
-    //             let url = URL.createObjectURL(blob);
-    //             resolve(url);
-    //         };
-
-    //         reader.onerror = (event) => {
-    //             reject(reader.error);
-    //         };
-
-    //         reader.readAsArrayBuffer(file);
-    //     });
-    // };
 
     async function onSelect(event) {
         // event.files == files to upload
         file = event.files[0];
         console.log(file);
 
+        toast.current.show({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "Uploaded " + file.name,
+                    life: 2000,
+                    style: { color: "white" },
+                });
+
+        setFile(file);
         setSelectedFile(file);
     }
 
@@ -42,25 +32,6 @@ const UploadButtonComponent = ({ onFileUpload }) => {
         // event.files == files that failed to upload
         file = undefined;
     };
-
-    const handleConvert = () => {
-        if (selectedFile) {
-            // Uploads file so it can be used elsewhere
-            if (onFileUpload) onFileUpload(selectedFile);
-            // Save file locally if you need it in a url e.x. localhost:8000/{uuid}
-            // url = await saveFileLocally(file);
-            toast.current.show({
-                severity: "success",
-                summary: "Success",
-                detail: "Uploaded " + selectedFile.name,
-                life: 2000,
-                style: { color: "white" },
-            });
-        }
-        else {
-            alert("Please select a file");
-        }
-    }
 
     const uploadButtonContainerStyles = {
         display: "flex",
@@ -114,7 +85,7 @@ const UploadButtonComponent = ({ onFileUpload }) => {
                 display: "flex",
                 flexDirection: "row",
                 width: "100%",
-                marginTop: "5vh",
+                marginTop: "25px",
                 alignItems: "center",
                 justifyContent: "center"
             }}>
@@ -135,9 +106,6 @@ const UploadButtonComponent = ({ onFileUpload }) => {
                     />
                 </div>
             </div>
-            <button style={convertButtonStyles} onClick={() => handleConvert()}>
-                Convert
-            </button>
         </div>
     );
 };
