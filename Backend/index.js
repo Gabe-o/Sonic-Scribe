@@ -93,7 +93,8 @@ app.post('/music', (req, res) => {
 app.get('/music', (req, res) => {
 	const sql = 'SELECT * FROM music WHERE userId = ?';
 	const userId = req.query.userId;
-	connection.query(sql, (err, results) => {
+	console.log(`Fetching songs for userId: ${userId}`);
+	connection.query(sql, [userId], (err, results) => {
 		if (err) {
 			console.error('Error retrieving music records: ' + err);
 			res.status(500).send('Error retrieving music records');
@@ -129,17 +130,17 @@ Example PUT:
 }
 */
 app.put('/music/:id', (req, res) => {
-	const id = req.params.id;
-	const { xmlFile, title, userId, isPublic } = req.body;
-	const sql = 'UPDATE music SET xmlFile = ?, title = ?, userId = ?, isPublic = ? WHERE id = ?';
-	connection.query(sql, [xmlFile, title, userId, isPublic, id], (err, result) => {
-		if (err) {
-			console.error('Error updating music record: ' + err);
-			res.status(500).send('Error updating music record');
-			return;
-		}
-		res.send(result);
-	});
+    const { id } = req.params;
+    const { isPublic } = req.body; // Make sure this is sent as a boolean from the frontend
+
+    const sql = 'UPDATE music SET isPublic = ? WHERE id = ?';
+    connection.query(sql, [isPublic, id], (err, result) => {
+        if (err) {
+            console.error('Error updating music record:', err);
+            return res.status(500).send('Error updating music record');
+        }
+        res.send('Music record updated successfully');
+    });
 });
 
 
@@ -194,6 +195,19 @@ app.post('/upload', upload.single('file'), (req, res) => {
             return res.status(500).send('Error inserting music record');
         }
         res.status(201).send('File uploaded successfully');
+    });
+});
+
+app.put('/music/visibility', (req, res) => {
+    const { songId, isPublic } = req.body;
+    const sql = 'UPDATE music SET isPublic = ? WHERE id = ?';
+
+    connection.query(sql, [isPublic, songId], (err, result) => {
+        if (err) {
+            console.error('Error updating song visibility:', err);
+            return res.status(500).send('Error updating song visibility');
+        }
+        res.send('Song visibility updated successfully');
     });
 });
 
