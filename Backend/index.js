@@ -1,9 +1,8 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { exec } = require("child_process");
-const fs = require("fs");
-const mysql = require('mysql');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import mysql from 'mysql';
+import convertRoutes from './convertRoutes.js';
 
 const app = express();
 
@@ -15,13 +14,15 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use("/convert", convertRoutes);
+
 // MySQL database connection
 const connection = mysql.createConnection({
-	host: 'db-4450.cluster-c9q6eyiik9it.us-east-2.rds.amazonaws.com',
-	user: 'admin',
-	password: 'ghp_dN2elKwmhWb2XVDoJ&&%^Dhd',
-	database: "db",
-	port: 3306,
+	host: process.env.MYSQL_HOST,
+	user: process.env.MYSQL_USER,
+	password: process.env.MYSQL_PASSWORD,
+	database: process.env.MYSQL_DATABASE,
+	port: process.env.MYSQL_PORT,
 });
 
 // Connect to the database
@@ -151,29 +152,6 @@ app.delete('/music/:id', (req, res) => {
 			return;
 		}
 		res.send('Music record deleted successfully');
-	});
-});
-
-
-app.post("/convert", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req, res) => {
-	fs.writeFile("music.midi", req.body, (err) => {
-		if (err) {
-			res.status(500).send("An error occured creating music.midi file for reason: " + err);
-		} else {
-			exec("musescore3.exe music.midi -o music.xml", (err, stdout, stderr) => {
-				if (err) {
-					res.status(500).send("Error converting midi file to xml file for reasons: " + err + "\n\n" + stderr);
-				} else {
-					fs.readFile("music.xml", "utf8", (err, data) => {
-						if (err) {
-							res.status(500).send("Error reading music.xml file for reason: " + err);
-						} else {
-							res.status(200).send(data);
-						}
-					});
-				}
-			});
-		}
 	});
 });
 

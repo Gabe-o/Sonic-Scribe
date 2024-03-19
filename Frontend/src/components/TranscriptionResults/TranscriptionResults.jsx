@@ -5,7 +5,7 @@ import StaffVisualizer from "../StaffVisualizer/StaffVisualizer";
 import XmlDownloadButton from "../XmlDownloadButton/XmlDownloadButton";
 import MidiDownloadButton from "../MidiDownloadButton/MidiDownloadButton";
 import "./TranscriptionResults.css";
-import TranscribePage from "../TranscribePage/TranscribePage";
+import NavigationBar from "../NavigationBar/NavigationBar";
 
 
 const TranscriptionResults = ({ noteSequence, handleConvertMore }) => {
@@ -14,6 +14,7 @@ const TranscriptionResults = ({ noteSequence, handleConvertMore }) => {
 
     return (
         <div class="transcriptionResults-bg">
+            <NavigationBar />
             <h1 class="transcriptionResults-title">Your audio has been converted:</h1>
             <div class="transcriptionResults-preview">
                 {pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} /> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />}

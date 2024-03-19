@@ -1,10 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { getCachedNoteSequences } from "../../scoreDB";
+import { navigate } from "gatsby";
+
 import "./PreviousTranscriptsMenu.css"
 import "./TranscriptionSelector.css"
-import { getCachedNoteSequences } from "../../scoreDB";
 
-export default function PreviousTranscriptsMenu({ setNoteSequence, noteSequence }) {
+export default function PreviousTranscriptsMenu() {
     const [transcripts, setTranscripts] = useState([]);
 
     useEffect(() => {
@@ -13,26 +15,26 @@ export default function PreviousTranscriptsMenu({ setNoteSequence, noteSequence 
         }
 
         getTranscripts();
-    }, [noteSequence]);
+    }, []);
 
     return (
-        <div class="previousTranscriptsMenu-container">
-            {transcripts.map((t) => <TranscriptionSelector noteSequence={t?.noteSequence} title={t?.title} setNoteSequence={setNoteSequence}/>)}
+        <div className="previousTranscriptsMenu-container">
+            {transcripts.map((t, i) => <TranscriptionSelector key={i} noteSequence={t?.noteSequence} title={t?.title} />)}
         </div>
     );
 }
 
-function TranscriptionSelector({ noteSequence, title, setNoteSequence }) {
+function TranscriptionSelector({ noteSequence, title,}) {
     const openTranscript = () => {
-        setNoteSequence(noteSequence);
+        navigate("/results", { state:{noteSequence: noteSequence} });
     };
 
     return (
-        <div class="transcriptionSelector-container" onClick={openTranscript}>
-            <div class="transcriptionSelector-image">
+        <div className="transcriptionSelector-container" onClick={openTranscript}>
+            <div className="transcriptionSelector-image">
 
             </div>
-            <p class="transcriptionSelector-title">{title}</p>
+            <p className="transcriptionSelector-title">{title}</p>
         </div>
     );
 }
