@@ -19,11 +19,11 @@ app.use((req, res, next) => {
 
 // MySQL database connection
 const connection = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: 'pw123',
-	database: "db",
-	port: 3306,
+    host: 'localhost',
+    user: 'root',
+    password: 'pw123',
+    database: "db",
+    port: 3306,
 });
 
 // Connect to the database

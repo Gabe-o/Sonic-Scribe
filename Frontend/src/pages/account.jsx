@@ -29,7 +29,7 @@ const AccountPage = () => {
             formData.append('isPublic', true); // This could also be dynamic based on user input
 
             try {
-                const response = await fetch('/upload', {
+                const response = await fetch('http://localhost:10000/upload', {
                     method: 'POST',
                     body: formData,
                 });
