@@ -130,10 +130,10 @@ Example PUT:
 }
 */
 app.put('/music/:id', (req, res) => {
-    const { id } = req.params;
-    const { isPublic } = req.body; // Make sure this is sent as a boolean from the frontend
+    const id = req.params.id; // Extracting song ID from the URL
+    const { isPublic } = req.body; // Extracting isPublic from the request body
 
-    const sql = 'UPDATE music SET isPublic = ? WHERE id = ?';
+    const sql = `UPDATE music SET isPublic = ${isPublic} WHERE id = ${id}`;
     connection.query(sql, [isPublic, id], (err, result) => {
         if (err) {
             console.error('Error updating music record:', err);
@@ -142,6 +142,7 @@ app.put('/music/:id', (req, res) => {
         res.send('Music record updated successfully');
     });
 });
+
 
 
 // Delete a music record
@@ -195,19 +196,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
             return res.status(500).send('Error inserting music record');
         }
         res.status(201).send('File uploaded successfully');
-    });
-});
-
-app.put('/music/visibility', (req, res) => {
-    const { songId, isPublic } = req.body;
-    const sql = 'UPDATE music SET isPublic = ? WHERE id = ?';
-
-    connection.query(sql, [isPublic, songId], (err, result) => {
-        if (err) {
-            console.error('Error updating song visibility:', err);
-            return res.status(500).send('Error updating song visibility');
-        }
-        res.send('Song visibility updated successfully');
     });
 });
 
