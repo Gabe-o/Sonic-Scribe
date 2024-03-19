@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'; // Added useRef to the import
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import NavigationBar from '../components/NavigationBar/NavigationBar';
 import AccountSongs from '../components/AccountSongs/AccountSongs';
 import AccountFavourites from '../components/AccountFavourites/AccountFavourites';
@@ -12,18 +12,37 @@ import '../styles/account.css';
 const AccountPage = () => {
     const { user } = useContext(UserContext);
     const [content, setContent] = useState("My Songs");
-    const fileInputRef = useRef(null); // Correct usage of useRef
+    const [refreshSongs, setRefreshSongs] = useState(false);
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
-        // Uncomment the next line if you want to redirect non-logged-in users to the login page
-        // if (!user) navigate("/login");
+        if (!user) navigate("/login");
     }, [user]);
 
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            console.log('File selected for upload:', file.name);
-            // Implement the upload logic here, or pass the file to another component to handle
+            const formData = new FormData();
+            formData.append('file', file);
+            // Adjust 'userId' and 'isPublic' as necessary based on your application's requirements
+            formData.append('userId', user ? user.id : ''); // Assuming 'user' has an 'id' property
+            formData.append('isPublic', true); // This could also be dynamic based on user input
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                console.log('Upload successful');
+                setRefreshSongs(prev => !prev); // Trigger refresh of the song list
+            } catch (error) {
+                console.error('Upload failed:', error);
+            }
         }
     };
 
@@ -36,16 +55,16 @@ const AccountPage = () => {
                 </div>
                 <div className='account-navbar'>
                     <div className='account-navbar-container'>
-                        <div onClick={() => setContent("My Songs")} className={"account-navbar-link" + (content === "My Songs" ? " active" : "")}>
+                        <div onClick={() => setContent("My Songs")} className={`account-navbar-link ${content === "My Songs" ? "active" : ""}`}>
                             <div>My Songs</div>
                         </div>
-                        <div onClick={() => setContent("Favourites")} className={"account-navbar-link" + (content === "Favourites" ? " active" : "")}>
+                        <div onClick={() => setContent("Favourites")} className={`account-navbar-link ${content === "Favourites" ? "active" : ""}`}>
                             <div>Favourites</div>
                         </div>
                     </div>
                     <div className='account-navbar-container'>
                         <div 
-                            onClick={() => fileInputRef.current && fileInputRef.current.click()} // Trigger file input on click
+                            onClick={() => fileInputRef.current && fileInputRef.current.click()}
                             className="account-navbar-upload"
                         >
                             <span>+</span>
@@ -60,7 +79,7 @@ const AccountPage = () => {
                         />
                     </div>
                 </div>
-                {content === "My Songs" && <AccountSongs />}
+                {content === "My Songs" && <AccountSongs refresh={refreshSongs} />}
                 {content === "Favourites" && <AccountFavourites />}
                 {content === "Upload" && <AccountUpload />}
             </div>
