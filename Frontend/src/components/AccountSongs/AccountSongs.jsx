@@ -50,21 +50,24 @@ const AccountSongs = ({ refresh, setRefreshSongs }) => {
 
 
 
-  return (
-      <div>
-          <h2>My Songs</h2>
-          <ul>
-              {songs.map((song) => (
-                  <li key={song.id}>
-                      {song.title} - Visibility: {song.isPublic ? 'Public' : 'Private'}
-                      <button onClick={() => toggleVisibility(song.id, song.isPublic)}>
-                          Make {song.isPublic ? 'Private' : 'Public'}
-                      </button>
-                  </li>
-              ))}
-          </ul>
-      </div>
-  );
+return (
+  <div>
+      <h2>My Songs</h2>
+      <ul className="song-list">
+          {songs.map((song) => (
+              <li key={song.id} className="song-list-item">
+                  <span className="song-title">{song.title} - Visibility: {song.isPublic ? 'Public' : 'Private'}</span>
+                  <button
+                      onClick={() => toggleVisibility(song.id, song.isPublic)}
+                      className="visibility-button"
+                  >
+                      Make {song.isPublic ? 'Private' : 'Public'}
+                  </button>
+              </li>
+          ))}
+      </ul>
+  </div>
+);
 };
 
 export default AccountSongs;
