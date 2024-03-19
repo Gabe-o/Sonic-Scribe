@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const { exec } = require("child_process");
 const fs = require("fs");
 const mysql = require('mysql');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const app = express();
 
@@ -175,6 +177,23 @@ app.post("/convert", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req,
 			});
 		}
 	});
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    const { originalname: title } = req.file; // Destructure and rename 'originalname' to 'title'
+    const userId = req.body.userId; // You'll need to retrieve the userId from the request
+    const isPublic = req.body.isPublic; // Whether the file is public or private
+    const filePath = req.file.path; // The path to where the file is saved
+
+    // SQL to insert new record into 'music' table
+    const sql = 'INSERT INTO music (xmlFile, title, userId, isPublic) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [filePath, title, userId, isPublic], (err, result) => {
+        if (err) {
+            console.error('Error inserting music record:', err);
+            return res.status(500).send('Error inserting music record');
+        }
+        res.status(201).send('File uploaded successfully');
+    });
 });
 
 app.listen(10000, () => {
