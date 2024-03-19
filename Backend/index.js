@@ -19,9 +19,9 @@ app.use((req, res, next) => {
 
 // MySQL database connection
 const connection = mysql.createConnection({
-	host: 'db-4450.cluster-c9q6eyiik9it.us-east-2.rds.amazonaws.com',
-	user: 'admin',
-	password: 'ghp_dN2elKwmhWb2XVDoJ&&%^Dhd',
+	host: 'localhost',
+	user: 'root',
+	password: 'pw123',
 	database: "db",
 	port: 3306,
 });
@@ -181,8 +181,8 @@ app.post("/convert", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req,
 
 app.post('/upload', upload.single('file'), (req, res) => {
     const { originalname: title } = req.file; // Destructure and rename 'originalname' to 'title'
-    const userId = req.body.userId; // You'll need to retrieve the userId from the request
-    const isPublic = req.body.isPublic; // Whether the file is public or private
+    let { userId, isPublic } = req.body;
+    isPublic = isPublic === 'true' ? 1 : 0; // Convert isPublic to 1 or 0 based on its value
     const filePath = req.file.path; // The path to where the file is saved
 
     // SQL to insert new record into 'music' table
