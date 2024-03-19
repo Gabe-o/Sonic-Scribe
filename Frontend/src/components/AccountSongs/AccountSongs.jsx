@@ -9,15 +9,25 @@ const AccountSongs = ({ refresh }) => {
     const { user } = useContext(UserContext);
 
     useEffect(() => {
-      if (user) {
-          fetch(`http://localhost:10000/music?userId=${user.id}`)
-              .then(response => response.json())
-              .then(data => {
+      const fetchSongs = async () => {
+          if (user) {
+              // Include the full URL in the fetch call
+              const url = `http://localhost:10000/music?userId=${user.id}`;
+              try {
+                  const response = await fetch(url);
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  const data = await response.json();
                   setSongs(data);
-              })
-              .catch(error => console.error('Error fetching songs:', error));
-      }
-  }, [user]); // Re-fetch when user changes
+              } catch (error) {
+                  console.error("Failed to fetch songs:", error);
+              }
+          }
+      };
+
+      fetchSongs();
+  }, [user, refresh]); // Re-fetch when user changes or when a new song is uploaded
 
   return (
     <div>
