@@ -6,26 +6,15 @@ const AccountSongs = ({ refresh }) => {
     const { user } = useContext(UserContext);
 
     useEffect(() => {
-        const fetchSongs = async () => {
-            if (!user) {
-                console.log("No user logged in");
-                return;
-            }
-            const url = `/music?userId=${user.id}`; // Example: Fetch songs for the logged-in user
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setSongs(data);
-            } catch (error) {
-                console.error("Failed to fetch songs:", error);
-            }
-        };
-
-        fetchSongs();
-    }, [refresh, user]);
+      if (user) {
+          fetch(`http://localhost:10000/music?userId=${user.id}`)
+              .then(response => response.json())
+              .then(data => {
+                  setSongs(data);
+              })
+              .catch(error => console.error('Error fetching songs:', error));
+      }
+  }, [user]); // Re-fetch when user changes
 
     return (
         <div>
