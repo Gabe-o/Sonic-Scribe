@@ -91,7 +91,8 @@ app.post('/music', (req, res) => {
 
 // Retrieve all music records
 app.get('/music', (req, res) => {
-	const sql = 'SELECT * FROM music';
+	const sql = 'SELECT * FROM music WHERE userId = ?';
+	const userId = req.query.userId;
 	connection.query(sql, (err, results) => {
 		if (err) {
 			console.error('Error retrieving music records: ' + err);
