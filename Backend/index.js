@@ -2,7 +2,8 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import mysql from 'mysql';
-import convertRoutes from './convertRoutes.js';
+import convertRouter from './convertRoutes.js';
+import transcribeRouter from './transcribeRoutes.js';
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use("/convert", convertRoutes);
+app.use("/convert", convertRouter);
+app.use("/transcribe", transcribeRouter);
 
 // MySQL database connection
 const connection = mysql.createConnection({

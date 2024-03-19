@@ -4,9 +4,9 @@ import { exec } from 'child_process';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 
-const courseRouter = express.Router();
+const convertRouter = express.Router();
 
-courseRouter.post("", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req, res) => {
+convertRouter.post("", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req, res) => {
     const id = uuidv4();
     const midiFile = `${id}.midi`;
     const xmlFile = `${id}.xml`;
@@ -39,4 +39,4 @@ courseRouter.post("", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req
     });
 });
 
-export default courseRouter;
+export default convertRouter;
