@@ -196,11 +196,12 @@ function GameOverText({ windowWidth, windowHeight, score }) {
 }
 
 
-function Piano() {
+function Piano({ location }) {
+	const noteSequence = location.state.noteSequence || TWINKLE_TWINKLE;
 	const startDelay = 5;
 	const notes = Array.from({ length: 88 }, (_, i) => i + 21); // Generate MIDI keys from 21 to 108
 	const lineNotes = notes.filter((note) => [0, 5].includes(note % 12));
-	const noteMap = createNoteMap(TWINKLE_TWINKLE, window.innerWidth, window.innerHeight);
+	const noteMap = createNoteMap(noteSequence, window.innerWidth, window.innerHeight);
 	const [activeNotes, setActiveNotes] = useState({});
 	const [startTime, setStartTime] = useState(0);
 	const [elapsedTime, setElapsedTime] = useState(-startDelay);
