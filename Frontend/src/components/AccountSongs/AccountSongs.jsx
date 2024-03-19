@@ -19,9 +19,7 @@ const AccountSongs = ({ refresh, setRefreshSongs }) => {
       }
   }, [user, refresh]);
 
-  const toggleVisibility = async (songId, currentIsPublic) => {
-    console.log(`Toggling visibility for song ID: ${songId}`);
-
+  const toggleVisibility = async (songId, isPublic) => {
     try {
         const response = await fetch(`http://localhost:10000/music/${songId}`, {
             method: 'PUT',
@@ -29,7 +27,7 @@ const AccountSongs = ({ refresh, setRefreshSongs }) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                isPublic: !currentIsPublic, // This inverts the current visibility status
+                isPublic: !isPublic, // Toggle the visibility
             }),
         });
 
@@ -37,12 +35,19 @@ const AccountSongs = ({ refresh, setRefreshSongs }) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        console.log('Visibility toggled successfully');
-        setRefreshSongs(prev => !prev);
+        // Update songs state to reflect the change
+        setSongs(songs.map(song => {
+            if (song.id === songId) {
+                return {...song, isPublic: !song.isPublic}; // Update the isPublic status for the toggled song
+            }
+            return song;
+        }));
+
     } catch (error) {
         console.error('Failed to toggle visibility:', error);
     };
 };
+
 
 
   return (
