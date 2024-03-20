@@ -7,3 +7,4 @@ public
 .env
 __pycache__
 Backend/uploads/*
+certs

@@ -75,7 +75,7 @@ function PianoKey({ note, activeNotes, windowWidth, windowHeight }) {
 function createNoteMap(noteSequence = TWINKLE_TWINKLE, windowWidth, windowHeight, noteScale = windowHeight / 10) {
 	const pianoHeight = 150 / 919 * windowHeight > 150 ? 150 : 150 / 919 * windowHeight;
 
-	if (!noteSequence.quantizationInfo) noteSequence = quantizeNoteSequence(noteSequence);
+	if (quantizeNoteSequence && !noteSequence.quantizationInfo) noteSequence = quantizeNoteSequence(noteSequence);
 	let noteMap = {};
 	noteMap.notes = noteSequence.notes.map((note, i) => {
 		const isBlackKey = [1, 3, 6, 8, 10].includes(note.pitch % 12);
@@ -198,12 +198,17 @@ function GameOverText({ windowWidth, windowHeight, score }) {
 }
 
 function Piano({ location }) {
-	if (!isBrowser) return null;
+	let windowWidth = 500;
+	let windowHeight = 1000;
+	if (isBrowser) {
+		windowWidth = window.innerWidth;
+		windowHeight = window.innerHeight;
+	} 
 	const noteSequence = location.state?.noteSequence || TWINKLE_TWINKLE;
 	const startDelay = 5;
 	const notes = Array.from({ length: 88 }, (_, i) => i + 21); // Generate MIDI keys from 21 to 108
 	const lineNotes = notes.filter((note) => [0, 5].includes(note % 12));
-	const noteMap = createNoteMap(noteSequence, window.innerWidth, window.innerHeight);
+	const noteMap = createNoteMap(noteSequence, windowWidth, windowHeight);
 	const [activeNotes, setActiveNotes] = useState({});
 	const [startTime, setStartTime] = useState(0);
 	const [elapsedTime, setElapsedTime] = useState(-startDelay);
@@ -347,31 +352,31 @@ function Piano({ location }) {
 	}, [elapsedTime]);
 
 	return (
-		<Stage width={window.innerWidth} height={window.innerHeight}>
+		<Stage width={windowWidth} height={windowHeight}>
 			<Layer>
 				<Rect
-					width={window.innerWidth}
-					height={window.innerHeight}
+					width={windowWidth}
+					height={windowHeight}
 					fill="#323246"
 				/>
-				<Grid notes={lineNotes} time={noteMap.totalTime} elapsedTime={elapsedTime} windowWidth={window.innerWidth} windowHeight={window.innerHeight} noteScale={noteMap.noteScale} />
-				<NoteMap noteMap={noteMap} elapsedTime={elapsedTime} windowHeight={window.innerHeight} />
-				<ProgressBar time={noteMap.totalTime} elapsedTime={elapsedTime} windowWidth={window.innerWidth} />
+				<Grid notes={lineNotes} time={noteMap.totalTime} elapsedTime={elapsedTime} windowWidth={windowWidth} windowHeight={windowHeight} noteScale={noteMap.noteScale} />
+				<NoteMap noteMap={noteMap} elapsedTime={elapsedTime} windowHeight={windowHeight} />
+				<ProgressBar time={noteMap.totalTime} elapsedTime={elapsedTime} windowWidth={windowWidth} />
 				{notes.map((note) => {
 					if (![1, 3, 6, 8, 10].includes(note % 12)) {
-						return <PianoKey key={note} note={note} activeNotes={activeNotes} windowWidth={window.innerWidth} windowHeight={window.innerHeight} />;
+						return <PianoKey key={note} note={note} activeNotes={activeNotes} windowWidth={windowWidth} windowHeight={windowHeight} />;
 					}
 					return null;
 				})}
 				{notes.map((note) => {
 					if ([1, 3, 6, 8, 10].includes(note % 12)) {
-						return <PianoKey key={note} note={note} activeNotes={activeNotes} windowWidth={window.innerWidth} windowHeight={window.innerHeight} />;
+						return <PianoKey key={note} note={note} activeNotes={activeNotes} windowWidth={windowWidth} windowHeight={windowHeight} />;
 					}
 					return null;
 				})}
-				{<ScoreText score={score} windowWidth={window.innerWidth} windowHeight={window.innerHeight} />}
-				{!isStarted && <StartText windowWidth={window.innerWidth} windowHeight={window.innerHeight} />}
-				{isGameOver && <GameOverText windowWidth={window.innerWidth} windowHeight={window.innerHeight} restartGame={restartGame} score={score} />}
+				{<ScoreText score={score} windowWidth={windowWidth} windowHeight={windowHeight} />}
+				{!isStarted && <StartText windowWidth={windowWidth} windowHeight={windowHeight} />}
+				{isGameOver && <GameOverText windowWidth={windowWidth} windowHeight={windowHeight} restartGame={restartGame} score={score} />}
 			</Layer>
 		</Stage>
 	);

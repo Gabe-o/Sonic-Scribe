@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 import MusicXMLParser from "../components/MusicXMLParser/MusicXMLParser";
 import { UserContext } from '../contexts/user';
-import { xmlToNoteSequence } from "../musicXMLToNoteSequence";
 import axios from 'axios';
 import "../styles/sheet.css";
-import PianoRollVisualizer from "../components/PianoRollVisualizer/PianoRollVisualizer";
 
 function Sheet({ location }) {
     const { user } = useContext(UserContext);
@@ -13,6 +11,8 @@ function Sheet({ location }) {
     const [data, setData] = useState();
     const [noteSequence, setNoteSequence] = useState();
     const [isPublic, setIsPublic] = useState(false); // Add this line
+
+    useEffect(() => {}, [isPublic, title]); // force reload when these change
 
     const saveChanges = () => {
         axios.put(`${process.env.BACKEND_API_ENDPOINT}/music/${location.state.id}`, {
@@ -43,6 +43,7 @@ function Sheet({ location }) {
                 .then(async (res) => {
                     setData(res.data[0]);
                     setTitle(res.data[0].title);
+                    setIsPublic(res.data[0].isPublic);
                     // setNoteSequence(await xmlToNoteSequence(res.data[0]));
                 })
                 .catch(error => console.log(error));

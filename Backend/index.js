@@ -100,36 +100,36 @@ app.post('/music', (req, res) => {
 
 // Retrieve all music records
 app.get('/music', (req, res) => {
-    const userId = req.query.userId;
-    const searchTerm = req.query.searchTerm;
-    const isPublic = Number(req.query.isPublic);
-    const limit = Number(req.query.limit); // Default limit is 25
-    let sql = 'SELECT * FROM music WHERE title LIKE ?';
-    let params = [`%${searchTerm}%`];
+	const userId = req.query.userId;
+	const searchTerm = req.query.searchTerm;
+	const isPublic = Number(req.query.isPublic);
+	const limit = Number(req.query.limit); // Default limit is 25
+	let sql = 'SELECT * FROM music WHERE title LIKE ?';
+	let params = [`%${searchTerm}%`];
 
-    if (userId) {
-        sql += ' AND userId = ?';
-        params.push(userId);
-    }
+	if (userId) {
+		sql += ' AND userId = ?';
+		params.push(userId);
+	}
 
-    if (isPublic) {
-        sql += ' AND isPublic = ?';
-        params.push(isPublic);
-    }
+	if (isPublic) {
+		sql += ' AND isPublic = ?';
+		params.push(isPublic);
+	}
 
 	if (limit) {
 		sql += ' LIMIT ?';
-    	params.push(limit);
+		params.push(limit);
 	}
 
-    connection.query(sql, params, (err, results) => {
-        if (err) {
-            console.error('Error retrieving music records: ' + err);
-            res.status(500).send('Error retrieving music records');
-            return;
-        }
-        res.json(results);
-    });
+	connection.query(sql, params, (err, results) => {
+		if (err) {
+			console.error('Error retrieving music records: ' + err);
+			res.status(500).send('Error retrieving music records');
+			return;
+		}
+		res.json(results);
+	});
 });
 
 // Get a music record
@@ -158,17 +158,17 @@ Example PUT:
 }
 */
 app.put('/music/:id', (req, res) => {
-    const id = Number(req.params.id); // Extracting song ID from the URL
-    const { title, isPublic } = req.body; // Extracting title and isPublic from the request body
+	const id = Number(req.params.id); // Extracting song ID from the URL
+	const { title, isPublic } = req.body; // Extracting title and isPublic from the request body
 
-    const sql = `UPDATE music SET title = ?, isPublic = ? WHERE id = ?`;
-    connection.query(sql, [title, isPublic, id], (err, result) => {
-        if (err) {
-            console.error('Error updating music record:', err);
-            return res.status(500).send('Error updating music record');
-        }
-        res.send('Music record updated successfully');
-    });
+	const sql = `UPDATE music SET title = ?, isPublic = ? WHERE id = ?`;
+	connection.query(sql, [title, isPublic, id], (err, result) => {
+		if (err) {
+			console.error('Error updating music record:', err);
+			return res.status(500).send('Error updating music record');
+		}
+		res.send('Music record updated successfully');
+	});
 });
 
 // Delete a music record
@@ -210,6 +210,19 @@ app.post('/upload', upload.single('file'), (req, res) => {
 	});
 });
 
-app.listen(10000, () => {
-	console.log("Server started on port 10000");
-});
+if(process.env.HTTPS_RUN) {
+	const options = {
+		cert: fs.readFileSync(process.env.CERT_CERTIFICATE),
+		key: fs.readFileSync(process.env.CERT_PRIVATE),
+		ca: fs.readFileSync(process.env.CERT_CA_BUNDLE)
+	};
+	
+	https.createServer(options, app).listen(10000, () => {
+		console.log('HTTPS server running on port 10000');
+	});
+}
+else {
+	app.listen(10000, () => {
+		console.log("Server started on port 10000");
+	});
+}
