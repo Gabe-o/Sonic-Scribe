@@ -3,6 +3,8 @@ import { quantizeNoteSequence } from "@magenta/music/esm/core/sequences";
 import { Stage, Layer, Rect, Text, Line } from 'react-konva';
 import { TWINKLE_TWINKLE } from '../SampleNoteSequences';
 
+const isBrowser = typeof window !== "undefined"
+
 function getNoteX(note, width) {
 	let x;
 	switch (note % 12) {
@@ -195,9 +197,9 @@ function GameOverText({ windowWidth, windowHeight, score }) {
 	</>
 }
 
-
 function Piano({ location }) {
-	const noteSequence = location.state.noteSequence || TWINKLE_TWINKLE;
+	if (!isBrowser) return null;
+	const noteSequence = location.state?.noteSequence || TWINKLE_TWINKLE;
 	const startDelay = 5;
 	const notes = Array.from({ length: 88 }, (_, i) => i + 21); // Generate MIDI keys from 21 to 108
 	const lineNotes = notes.filter((note) => [0, 5].includes(note % 12));

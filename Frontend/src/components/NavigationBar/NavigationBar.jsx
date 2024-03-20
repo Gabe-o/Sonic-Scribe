@@ -35,11 +35,6 @@ const NavigationBar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to='/account' className='navbar-link'>
-                            Account
-                        </Link>
-                    </li>
-                    <li>
                         <Link to='/search' className='navbar-link'>
                             Search
                         </Link>

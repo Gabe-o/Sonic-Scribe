@@ -7,18 +7,29 @@ import MidiDownloadButton from "../MidiDownloadButton/MidiDownloadButton";
 import "./TranscriptionResults.css";
 import NavigationBar from "../NavigationBar/NavigationBar";
 import { navigate } from "gatsby";
+import TranscriptionResultsPreview from "../TranscriptionResultsPreview/TranscriptionResultsPreview";
 
 
 const TranscriptionResults = ({ noteSequence }) => {
-    const [pianoRoll, setPianoRoll] = useState(true);
     const [audioPlayback, setAudioPlayback] = useState(false);
+    const [preview, setPreview] = useState(0); // 0 Piano Roll, 1 Staff, 2 Sheet Music
 
     const handleConvertMore = () => {
-        navigate("/transcribe"); 
+        navigate("/transcribe");
     }
 
     const handlePlayAlong = () => {
         navigate("/game", { state: { noteSequence: noteSequence } });
+    }
+
+    const handleSwitchView = () => {
+        setPreview(curr => (curr+1) % 3);
+    }
+
+    const getPreview = () => {
+        if(preview === 0) return <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />;
+        else if(preview === 1) return <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />;
+        else if(preview === 2) return <TranscriptionResultsPreview noteSequence={noteSequence} />;
     }
 
     return (
@@ -26,13 +37,13 @@ const TranscriptionResults = ({ noteSequence }) => {
             <NavigationBar />
             <h1 class="transcriptionResults-title">Your audio has been converted:</h1>
             <div class="transcriptionResults-preview">
-                {pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} /> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />}
+                {getPreview()}
             </div>
             <div class="transcriptionResults-buttonContainer">
                 <XmlDownloadButton noteSequence={noteSequence} />
                 <button class="transcriptionResults-switchButton" disabled={audioPlayback}
                     onClick={() => {
-                        setPianoRoll(!pianoRoll);
+                        handleSwitchView();
                     }}
                 >
                     Switch View
