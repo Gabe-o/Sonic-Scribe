@@ -10,7 +10,7 @@ const AccountSongs = ({ refresh, setRefreshSongs }) => {
 
     useEffect(() => {
       if (user) {
-          fetch(`http://localhost:10000/music?userId=${user.id}`)
+          fetch(`/music?userId=${user.id}`)
               .then(response => response.json())
               .then(data => {
                   setSongs(data);
@@ -21,7 +21,7 @@ const AccountSongs = ({ refresh, setRefreshSongs }) => {
 
   const toggleVisibility = async (songId, isPublic) => {
     try {
-        const response = await fetch(`http://localhost:10000/music/${songId}`, {
+        const response = await fetch(`/music/${songId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
