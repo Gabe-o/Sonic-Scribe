@@ -5,15 +5,25 @@ import StaffVisualizer from "../StaffVisualizer/StaffVisualizer";
 import XmlDownloadButton from "../XmlDownloadButton/XmlDownloadButton";
 import MidiDownloadButton from "../MidiDownloadButton/MidiDownloadButton";
 import "./TranscriptionResults.css";
-import TranscribePage from "../TranscribePage/TranscribePage";
+import NavigationBar from "../NavigationBar/NavigationBar";
+import { navigate } from "gatsby";
 
 
-const TranscriptionResults = ({ noteSequence, handleConvertMore }) => {
+const TranscriptionResults = ({ noteSequence }) => {
     const [pianoRoll, setPianoRoll] = useState(true);
     const [audioPlayback, setAudioPlayback] = useState(false);
 
+    const handleConvertMore = () => {
+        navigate("/transcribe"); 
+    }
+
+    const handlePlayAlong = () => {
+        navigate("/game", { state: { noteSequence: noteSequence } });
+    }
+
     return (
         <div class="transcriptionResults-bg">
+            <NavigationBar />
             <h1 class="transcriptionResults-title">Your audio has been converted:</h1>
             <div class="transcriptionResults-preview">
                 {pianoRoll ? <PianoRollVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} /> : <StaffVisualizer noteSequence={noteSequence} setAudioPlayback={setAudioPlayback} />}
@@ -29,7 +39,10 @@ const TranscriptionResults = ({ noteSequence, handleConvertMore }) => {
                 </button>
                 <MidiDownloadButton noteSequence={noteSequence} />
             </div>
-            <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
+            <div class="transcriptionResults-buttonContainer">
+                <button class="transcriptionResults-convertButton" onClick={() => handleConvertMore()}>Convert More</button>
+                <button class="transcriptionResults-playAlongButton" onClick={() => handlePlayAlong()}>Play Along</button>
+            </div>
         </div>
     );
 }

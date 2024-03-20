@@ -1,10 +1,14 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { exec } = require("child_process");
-const fs = require("fs");
-const mysql = require('mysql');
-const multer = require('multer');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { exec } from 'child_process';
+import fs from 'fs';
+import mysql from 'mysql';
+import multer from 'multer';
+import convertRouter from './convertRoutes.js';
+import transcribeRouter from './transcribeRoutes.js';
+
 const upload = multer({ dest: 'uploads/' });
 
 const app = express();
@@ -16,6 +20,9 @@ app.use((req, res, next) => {
 	console.log(`Method: ${req.method} \t Path: ${req.path}`);
 	next();
 });
+
+app.use("/convert", convertRouter);
+app.use("/transcribe", transcribeRouter);
 
 // MySQL database connection
 const connection = mysql.createConnection({
@@ -158,7 +165,6 @@ app.delete('/music/:id', (req, res) => {
 		res.send('Music record deleted successfully');
 	});
 });
-
 
 app.post("/convert", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req, res) => {
 	fs.writeFile("music.midi", req.body, (err) => {

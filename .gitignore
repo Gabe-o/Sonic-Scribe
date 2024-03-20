@@ -2,5 +2,7 @@ node_modules/
 .cache/
 public
 .DS_Store
-Backend/music.midi
-Backend/music.xml
+.env.development
+.env.production
+.env
+__pycache__

@@ -12,7 +12,7 @@ const SearchPage = () => {
    
     useEffect( () => {
         const handleSearch = async () => {
-                axios.get(`http://localhost:10000/music`)
+                axios.get(`${process.env.BACKEND_API_ENDPOINT}/music`)
                 .then(res => setSearchResults(res.data))
                 .catch(error => console.log(error));  
         }
