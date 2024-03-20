@@ -4,6 +4,10 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
             module: {
                 rules: [
                     {
+                        test: /node:events|node:stream|node:util/,
+                        use: loaders.null(),
+                    },
+                    {
                         test: /@magenta/,
                         use: loaders.null(),
                     },

@@ -1,29 +1,28 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import NavigationBar from "../NavigationBar/NavigationBar";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from '../../contexts/user';
 import axios from 'axios';
 
-import "./SearchPage.css";
+import "./AccountSongSearch.css";
 import SearchSelector from "../SearchSelector/SearchSelector";
 
-const SearchPage = () => {
+const AccountSongSearch = ({refresh}) => {
+    const { user } = useContext(UserContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const handleSearch = async (searchTerm) => {
-        axios.get(`${process.env.BACKEND_API_ENDPOINT}/music?searchTerm=${searchTerm}&isPublic=1&limit=100`)
+        axios.get(`${process.env.BACKEND_API_ENDPOINT}/music?searchTerm=${searchTerm}&userId=${user.id}&limit=100`)
             .then(res => setSearchResults(res.data))
             .catch(error => console.log(error));
     }
 
     useEffect(() => {
-        handleSearch("");
-    }, []);
+        if(user) handleSearch("");
+    }, [user, refresh]);
+
 
     return (
         <div>
-            <NavigationBar />
             <form>
-                <h1>Search</h1>
                 <div class="d-flex form-inputs">
                     <input className="form-control" type="text" placeholder="Search for music..." value={searchTerm} onChange={(e) => {
                         setSearchTerm(e.target.value);
@@ -42,6 +41,6 @@ const SearchPage = () => {
     );
 };
 
-export default SearchPage;
+export default AccountSongSearch;
 
 export const Head = () => <title>SonicScribe</title>;

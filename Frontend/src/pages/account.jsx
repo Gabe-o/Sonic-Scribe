@@ -29,7 +29,7 @@ const AccountPage = () => {
             formData.append('isPublic', true); // This could also be dynamic based on user input
 
             try {
-                const response = await fetch('/upload', {
+                const response = await fetch(`${process.env.BACKEND_API_ENDPOINT}/upload`, {
                     method: 'POST',
                     body: formData,
                 });
@@ -74,7 +74,7 @@ const AccountPage = () => {
                             type="file" 
                             ref={fileInputRef}
                             onChange={handleFileChange} 
-                            accept=".mp3,.wav,.mid,.midi" 
+                            accept=".xml,.mxl,.musicxml" 
                             style={{ display: 'none' }} 
                         />
                     </div>

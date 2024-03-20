@@ -2,7 +2,7 @@ import * as mm from '@magenta/music';
 
 export async function xmlToNoteSequence(xmlString) {
     // Define the URL of your backend API
-    const apiUrl = 'http://localhost:3000/xml2midi';
+    const apiUrl = `${process.env.BACKEND_API_ENDPOINT}/convert/xml2midi`;
 
     // Create a new FormData instance
     const formData = new FormData();
