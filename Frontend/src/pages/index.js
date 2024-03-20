@@ -41,6 +41,12 @@ const IndexPage = () => {
 								<p class="p1">
 									Our platform allows you to effortlessly convert audio tracks, melodies, or compositions into accurate and readable sheet music.
 								</p>
+								<Row>	
+									<p className="p2">
+										Simply upload your audio file, and watch as our advanced technology transcribes the music into sheet notation, providing musicians and
+										composers with a new way to capture, preserve, and explore melodies.
+									</p>					
+								</Row>
 							</Col>
 							<Col>
 									<div id="slideshow">
@@ -56,14 +62,7 @@ const IndexPage = () => {
 									</div>
 							</Col>
 						</Row>
-							<Row>	
-								<Col>
-									<p className="p2">
-										Simply upload your audio file, and watch as our advanced technology transcribes the music into sheet notation, providing musicians and
-										composers with a new way to capture, preserve, and explore melodies.
-									</p>
-								</Col>						
-							</Row>
+							
 					</div>
 				</Container>
 			</div>
@@ -74,3 +73,4 @@ const IndexPage = () => {
 export default IndexPage;
 
 export const Head = () => <title>SonicScribe</title>;
+
