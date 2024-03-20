@@ -98,32 +98,51 @@ app.post('/music', (req, res) => {
 
 // Retrieve all music records
 app.get('/music', (req, res) => {
-	const sql = 'SELECT * FROM music WHERE userId = ?';
-	const userId = req.query.userId;
-	console.log(`Fetching songs for userId: ${userId}`);
-	connection.query(sql, [userId], (err, results) => {
-		if (err) {
-			console.error('Error retrieving music records: ' + err);
-			res.status(500).send('Error retrieving music records');
-			return;
-		}
-		res.json(results);
-	});
+    const userId = req.query.userId;
+    const searchTerm = req.query.searchTerm;
+    const isPublic = Number(req.query.isPublic);
+    const limit = Number(req.query.limit); // Default limit is 25
+    let sql = 'SELECT * FROM music WHERE title LIKE ?';
+    let params = [`%${searchTerm}%`];
+
+    if (userId) {
+        sql += ' AND userId = ?';
+        params.push(userId);
+    }
+
+    if (isPublic) {
+        sql += ' AND isPublic = ?';
+        params.push(isPublic);
+    }
+
+	if (limit) {
+		sql += ' LIMIT ?';
+    	params.push(limit);
+	}
+
+    connection.query(sql, params, (err, results) => {
+        if (err) {
+            console.error('Error retrieving music records: ' + err);
+            res.status(500).send('Error retrieving music records');
+            return;
+        }
+        res.json(results);
+    });
 });
 
-// Retrieve searched for music record
-app.get('/music', (req, res) => {
-	const query = `SELECT * FROM music WHERE title LIKE '%${searchTerm}%'`;
-  
-	connection.query(query, (err, results) => {
-	  if (err) {
-		console.error('Error retrieving searched for music record: ' + err);
-			res.status(500).send('Error retrieving music record');
+// Get a music record
+app.get('/music/:id', (req, res) => {
+	const id = Number(req.params.id);
+	const sql = 'SELECT * FROM music WHERE id = ?';
+	connection.query(sql, [id], (err, result) => {
+		if (err) {
+			console.error('Error selecting music record: ' + err);
+			res.status(500).send('Error selecting music record');
 			return;
-	  }
-	  res.json(results);
+		}
+		res.send(result);
 	});
-  });
+});
 
 
 /*
@@ -137,11 +156,11 @@ Example PUT:
 }
 */
 app.put('/music/:id', (req, res) => {
-    const id = req.params.id; // Extracting song ID from the URL
-    const { isPublic } = req.body; // Extracting isPublic from the request body
+    const id = Number(req.params.id); // Extracting song ID from the URL
+    const { title, isPublic } = req.body; // Extracting title and isPublic from the request body
 
-    const sql = `UPDATE music SET isPublic = ${isPublic} WHERE id = ${id}`;
-    connection.query(sql, [isPublic, id], (err, result) => {
+    const sql = `UPDATE music SET title = ?, isPublic = ? WHERE id = ?`;
+    connection.query(sql, [title, isPublic, id], (err, result) => {
         if (err) {
             console.error('Error updating music record:', err);
             return res.status(500).send('Error updating music record');
@@ -149,8 +168,6 @@ app.put('/music/:id', (req, res) => {
         res.send('Music record updated successfully');
     });
 });
-
-
 
 // Delete a music record
 app.delete('/music/:id', (req, res) => {
@@ -166,43 +183,29 @@ app.delete('/music/:id', (req, res) => {
 	});
 });
 
-app.post("/convert", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req, res) => {
-	fs.writeFile("music.midi", req.body, (err) => {
-		if (err) {
-			res.status(500).send("An error occured creating music.midi file for reason: " + err);
-		} else {
-			exec("musescore3.exe music.midi -o music.xml", (err, stdout, stderr) => {
-				if (err) {
-					res.status(500).send("Error converting midi file to xml file for reasons: " + err + "\n\n" + stderr);
-				} else {
-					fs.readFile("music.xml", "utf8", (err, data) => {
-						if (err) {
-							res.status(500).send("Error reading music.xml file for reason: " + err);
-						} else {
-							res.status(200).send(data);
-						}
-					});
-				}
-			});
-		}
-	});
-});
-
 app.post('/upload', upload.single('file'), (req, res) => {
-    const { originalname: title } = req.file; // Destructure and rename 'originalname' to 'title'
-    let { userId, isPublic } = req.body;
-    isPublic = isPublic === 'true' ? 1 : 0; // Convert isPublic to 1 or 0 based on its value
-    const filePath = req.file.path; // The path to where the file is saved
+	const { originalname: title } = req.file; // Destructure and rename 'originalname' to 'title'
+	let { userId, isPublic } = req.body;
+	isPublic = isPublic === 'true' ? 1 : 0; // Convert isPublic to 1 or 0 based on its value
 
-    // SQL to insert new record into 'music' table
-    const sql = 'INSERT INTO music (xmlFile, title, userId, isPublic) VALUES (?, ?, ?, ?)';
-    connection.query(sql, [filePath, title, userId, isPublic], (err, result) => {
-        if (err) {
-            console.error('Error inserting music record:', err);
-            return res.status(500).send('Error inserting music record');
-        }
-        res.status(201).send('File uploaded successfully');
-    });
+	// Read the file content
+	const filePath = req.file.path; // The path to where the file is saved
+	const xmlData = fs.readFileSync(filePath);
+
+	// SQL to insert new record into 'music' table
+	const sql = 'INSERT INTO music (xmlFile, title, userId, isPublic) VALUES (?, ?, ?, ?)';
+	connection.query(sql, [xmlData, title.split(".")[0], userId, isPublic], (err, result) => {
+		if (err) {
+			console.error('Error inserting music record:', err);
+			return res.status(500).send('Error inserting music record');
+		}
+
+		fs.unlink(filePath, (err) => {
+			if (err) console.error("Error deleting " + filePath + ": " + err);
+		});
+
+		res.status(201).send('File uploaded successfully');
+	});
 });
 
 app.listen(10000, () => {
