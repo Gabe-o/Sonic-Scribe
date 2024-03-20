@@ -6,7 +6,7 @@ import fs from 'fs';
 
 const convertRouter = express.Router();
 
-convertRouter.post("", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req, res) => {
+convertRouter.post("/midi2xml", bodyParser.raw({ type: "audio/midi", limit: "200mb" }), (req, res) => {
     const id = uuidv4();
     const midiFile = `${id}.midi`;
     const xmlFile = `${id}.xml`;
@@ -30,6 +30,39 @@ convertRouter.post("", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (re
                             });
                             fs.unlink(xmlFile, (err) => {
                                 if (err) console.error("Error deleting " + xmlFile + ": " + err);
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+convertRouter.post("/xml2midi", bodyParser.raw({ type: "text/xml", limit: "200mb" }), (req, res) => {
+    const id = uuidv4();
+    const xmlFile = `${id}.xml`;
+    const midiFile = `${id}.midi`;
+
+    fs.writeFile(xmlFile, req.body, (err) => {
+        if (err) {
+            res.status(500).send("An error occurred creating " + xmlFile + " for reason: " + err);
+        } else {
+            exec(`"${process.env.MUSESCORE_PATH_EXE}" ${xmlFile} -o ${midiFile}`, (err, stdout, stderr) => {
+                if (err) {
+                    res.status(500).send("Error converting xml file to midi file for reasons: " + err + "\n\n" + stderr);
+                } else {
+                    fs.readFile(midiFile, (err, data) => {
+                        if (err) {
+                            res.status(500).send("Error reading " + midiFile + " for reason: " + err);
+                        } else {
+                            res.status(200).send(Buffer.from(data));
+                            // Delete the temporary files
+                            fs.unlink(xmlFile, (err) => {
+                                if (err) console.error("Error deleting " + xmlFile + ": " + err);
+                            });
+                            fs.unlink(midiFile, (err) => {
+                                if (err) console.error("Error deleting " + midiFile + ": " + err);
                             });
                         }
                     });
