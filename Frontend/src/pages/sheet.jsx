@@ -19,10 +19,10 @@ function Sheet({ location }) {
             title: title,
             isPublic: isPublic
         })
-        .then((res) => {
-            alert("Success!");
-        })
-        .catch(error => console.log(error));
+            .then((res) => {
+                alert("Success!");
+            })
+            .catch(error => console.log(error));
     }
 
     const handleFavourite = () => {
@@ -52,28 +52,29 @@ function Sheet({ location }) {
     }, []);
 
     const getSidebarContent = () => {
-        if (data.userId === user.id) { // if this is the users you can edit
-            return (
-                <div className="sheet-selector">
-                    <input type="text" value={title} onChange={(e) => handleTitleChange(e.target.value)} />
-                    <label>
-                        Is Public: 
-                        <input type="checkbox" checked={isPublic} onChange={(e) => handlePublicChange(e.target.checked)} />
-                    </label>
-                    <button class="sheet-favouriteButton" onClick={() => saveChanges()}>Save Changes</button>
-                    {user ? <button class="sheet-favouriteButton" onClick={() => handleFavourite()}>Favourite!</button> : ""}
-                </div>
-            );
+        if (data && user) {
+            if (data.userId === user.id) { // if this is the users you can edit
+                return (
+                    <div className="sheet-selector">
+                        <input type="text" value={title} onChange={(e) => handleTitleChange(e.target.value)} />
+                        <label>
+                            Is Public:
+                            <input type="checkbox" checked={isPublic} onChange={(e) => handlePublicChange(e.target.checked)} />
+                        </label>
+                        <button class="sheet-favouriteButton" onClick={() => saveChanges()}>Save Changes</button>
+                        {user ? <button class="sheet-favouriteButton" onClick={() => handleFavourite()}>Favourite!</button> : ""}
+                    </div>
+                );
+            }
         }
-        else {
-            return (
-                <div className="sheet-selector">
-                    <h1>{title}</h1>
-                    {user ? <button class="sheet-favouriteButton" onClick={() => handleFavourite()}>Favourite!</button> : ""}
-                </div>
-            );
-        }
+        return (
+            <div className="sheet-selector">
+                <h1>{title}</h1>
+                {user ? <button class="sheet-favouriteButton" onClick={() => handleFavourite()}>Favourite!</button> : ""}
+            </div>
+        );
     }
+
 
     return (
         <>
