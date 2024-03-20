@@ -1,9 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { exec } = require("child_process");
-const fs = require("fs");
-const mysql = require('mysql');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { exec } from 'child_process';
+import fs from 'fs';
+import mysql from 'mysql';
+import multer from 'multer';
+import convertRouter from './convertRoutes.js';
+import transcribeRouter from './transcribeRoutes.js';
+
+const upload = multer({ dest: 'uploads/' });
 
 const app = express();
 
@@ -15,13 +21,16 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use("/convert", convertRouter);
+app.use("/transcribe", transcribeRouter);
+
 // MySQL database connection
 const connection = mysql.createConnection({
-	host: 'db-4450.cluster-c9q6eyiik9it.us-east-2.rds.amazonaws.com',
-	user: 'admin',
-	password: 'ghp_dN2elKwmhWb2XVDoJ&&%^Dhd',
-	database: "db",
-	port: 3306,
+	host: process.env.MYSQL_HOST,
+	user: process.env.MYSQL_USER,
+	password: process.env.MYSQL_PASSWORD,
+	database: process.env.MYSQL_DATABASE,
+	port: process.env.MYSQL_PORT,
 });
 
 // Connect to the database
@@ -89,8 +98,10 @@ app.post('/music', (req, res) => {
 
 // Retrieve all music records
 app.get('/music', (req, res) => {
-	const sql = 'SELECT * FROM music';
-	connection.query(sql, (err, results) => {
+	const sql = 'SELECT * FROM music WHERE userId = ?';
+	const userId = req.query.userId;
+	console.log(`Fetching songs for userId: ${userId}`);
+	connection.query(sql, [userId], (err, results) => {
 		if (err) {
 			console.error('Error retrieving music records: ' + err);
 			res.status(500).send('Error retrieving music records');
@@ -126,18 +137,19 @@ Example PUT:
 }
 */
 app.put('/music/:id', (req, res) => {
-	const id = req.params.id;
-	const { xmlFile, title, userId, isPublic } = req.body;
-	const sql = 'UPDATE music SET xmlFile = ?, title = ?, userId = ?, isPublic = ? WHERE id = ?';
-	connection.query(sql, [xmlFile, title, userId, isPublic, id], (err, result) => {
-		if (err) {
-			console.error('Error updating music record: ' + err);
-			res.status(500).send('Error updating music record');
-			return;
-		}
-		res.send(result);
-	});
+    const id = req.params.id; // Extracting song ID from the URL
+    const { isPublic } = req.body; // Extracting isPublic from the request body
+
+    const sql = `UPDATE music SET isPublic = ${isPublic} WHERE id = ${id}`;
+    connection.query(sql, [isPublic, id], (err, result) => {
+        if (err) {
+            console.error('Error updating music record:', err);
+            return res.status(500).send('Error updating music record');
+        }
+        res.send('Music record updated successfully');
+    });
 });
+
 
 
 // Delete a music record
@@ -153,7 +165,6 @@ app.delete('/music/:id', (req, res) => {
 		res.send('Music record deleted successfully');
 	});
 });
-
 
 app.post("/convert", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req, res) => {
 	fs.writeFile("music.midi", req.body, (err) => {
@@ -175,6 +186,23 @@ app.post("/convert", bodyParser.raw({ type: "audio/midi", limit: "2mb" }), (req,
 			});
 		}
 	});
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    const { originalname: title } = req.file; // Destructure and rename 'originalname' to 'title'
+    let { userId, isPublic } = req.body;
+    isPublic = isPublic === 'true' ? 1 : 0; // Convert isPublic to 1 or 0 based on its value
+    const filePath = req.file.path; // The path to where the file is saved
+
+    // SQL to insert new record into 'music' table
+    const sql = 'INSERT INTO music (xmlFile, title, userId, isPublic) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [filePath, title, userId, isPublic], (err, result) => {
+        if (err) {
+            console.error('Error inserting music record:', err);
+            return res.status(500).send('Error inserting music record');
+        }
+        res.status(201).send('File uploaded successfully');
+    });
 });
 
 app.listen(10000, () => {
