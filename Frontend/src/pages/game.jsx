@@ -108,7 +108,7 @@ function NoteMap({ noteMap, elapsedTime, windowHeight }) {
 	// Only render notes that are visable
 	const visibleNotes = noteMap.notes.filter(note => {
 		const y = note.y + elapsedTime * noteMap.noteScale;
-		return y < windowHeight && y > 0;
+		return note.y < windowHeight && y > 0;
 	});
 
 	return visibleNotes.map((note) => {
