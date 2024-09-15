@@ -11,7 +11,8 @@
 
 #### Members: Luxshan Jeyaranjan, Haris Memon, Sehaj Naangal, Gabriel Olivotto, Ranvir Sandhu, Suharsh Sandhu
 
-## [Demonstration](https://www.youtube.com/watch?v=YDKXEpoeNSE)
+## Demonstration
+[![Youtube Video](https://img.youtube.com/vi/YDKXEpoeNSE/0.jpg)](https://www.youtube.com/watch?v=YDKXEpoeNSE)
 
 ## Quick start
 
