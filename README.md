@@ -12,7 +12,14 @@
 #### Members: Luxshan Jeyaranjan, Haris Memon, Sehaj Naangal, Gabriel Olivotto, Ranvir Sandhu, Suharsh Sandhu
 
 ## Demonstration
+Click to see our presentation!
+
 [![Youtube Video](https://img.youtube.com/vi/YDKXEpoeNSE/0.jpg)](https://www.youtube.com/watch?v=YDKXEpoeNSE)
+
+#### Example Transcriptions
+Click to see some sample transcriptions!
+
+[![Youtube Video](https://img.youtube.com/vi/zb2GBYZoEwQ/0.jpg)](https://www.youtube.com/watch?v=zb2GBYZoEwQ&list=PLWJNn4rj0Lh6zp-2JKOnFsHeBFd2L3TA-)
 
 ## Quick start
 
